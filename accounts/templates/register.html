@@ -1,0 +1,29 @@
+<h3>Register</h3>
+
+<form method="POST" action="">
+	{% csrf_token %}
+	{{form.username.label}}
+	{{form.username}}
+	
+	<br><br>
+	
+	{{form.email.label}}
+	{{form.email}}
+	
+	<br><br>
+	
+	{{form.password1.label}}
+	{{form.password1}}
+	
+	<br><br>
+	
+	{{form.password2.label}}
+	{{form.password2}}
+	
+	<br><br>
+	
+	{{form.errors}}
+	
+	<input type="submit" name="Register">
+	<p>Already have an account? <span><a  href="{% url 'login' %}">Sign in</a></span></p>
+</form>
