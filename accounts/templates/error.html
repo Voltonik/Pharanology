@@ -1,9 +1,11 @@
-<h3>Student Dashboard</h3>
+<h3>Error</h3>
 
 <form method="POST" action="">
 	{% csrf_token %}
 	
-	<p>Hello, {{request.user}}</p>
+	{%	for message in messages %}
+		<p id="messages">{{message}}</p>
+	{% endfor %}
 	
 	<span><a  href="{% url 'logout' %}">Logout</a></span>
 </form>

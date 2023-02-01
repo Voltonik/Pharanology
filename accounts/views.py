@@ -3,30 +3,32 @@ from django.http import HttpResponse
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.models import Group
 
 from .forms import CreateUserForm
+from .decorators import unauthenticated_user, allowed_users
 
+@unauthenticated_user
 def register_request(request):
-    if request.user.is_authenticated:
-        return redirect('dashboard')
-    
     form = CreateUserForm()
     
     if request.method == 'POST':
         form = CreateUserForm(request.POST)
         if form.is_valid():
-            form.save()
-            messages.success(request, 'Account was created')
+            user = form.save()
             
-            return redirect('login')
+            group = Group.objects.get(name='student')
+            user.groups.add(group)
+            
+            user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password1'])
+            login(request, user)
+            return redirect('dashboard')
     
     context = {'form': form}
     return render(request, 'register.html', context)
 
+@unauthenticated_user
 def login_request(request):
-    if request.user.is_authenticated:
-        return redirect('dashboard')
-    
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -46,5 +48,6 @@ def logout_request(request):
     return redirect('login')
 
 @login_required(login_url='login')
+@allowed_users(allowed_roles=['student'])
 def dashboard_request(request):
     return render(request, 'dashboard.html')
