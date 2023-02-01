@@ -4,7 +4,7 @@ In today’s age paper exams are redundant as they are often very problematic; T
 Pharanology is an engaging platform for taking exams that eliminates these issues and more, in addition to making the exam-taking experience more interactive & modern.
 
 ## How to test or contribute
-1. Fork(clone) the repository (by clicking on the top right button on GitHub)
+1. Fork the repository (by clicking on the top right button on GitHub)
 2. Open Visual Studio Code and click on "Clone Git Repository..." in the start up page.
 3. In the prompt, copy and paste your forked project link (go to your GitHub profile, you will see the cloned repository)
 4. Open a terminal in vscode and run `pip install -r requirements.txt`
