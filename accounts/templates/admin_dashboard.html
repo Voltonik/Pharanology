@@ -1,0 +1,9 @@
+<h3>Admin Dashboard</h3>
+
+<form method="POST" action="">
+	{% csrf_token %}
+	
+	<p>Hello, {{request.user}}</p>
+	
+	<span><a  href="{% url 'logout' %}">Logout</a></span>
+</form>

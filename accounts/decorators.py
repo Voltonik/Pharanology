@@ -14,17 +14,20 @@ def unauthenticated_user(view_func):
 		
 	return wrapper_func
 
-def allowed_users(allowed_roles=[]):
+def allowed_roles(allowed_roles, admin_dashboard_fallback = True):
 	def decorator(view_func):
 		def wrapper_func(request, *args, **kwargs):
-			group = []
+			groups = []
 			if request.user.groups.exists():
-				group = list(request.user.groups.values_list('name', flat = True))
+				groups = list(request.user.groups.values_list('name', flat = True))
 			
-			if not set(allowed_roles).isdisjoint(group):
+			if not set(allowed_roles).isdisjoint(groups):
 				return view_func(request, *args, **kwargs)
+			elif admin_dashboard_fallback and 'admin' in groups:
+				return render(request, 'admin_dashboard.html')
 			
 			messages.error(request, 'You are not authorized to view this page.')
 			return render(request, 'error.html')
+		
 		return wrapper_func
 	return decorator

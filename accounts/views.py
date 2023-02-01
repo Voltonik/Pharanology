@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
 
 from .forms import CreateUserForm
-from .decorators import unauthenticated_user, allowed_users
+from .decorators import unauthenticated_user, allowed_roles
 
 @unauthenticated_user
 def register_request(request):
@@ -48,6 +48,6 @@ def logout_request(request):
     return redirect('login')
 
 @login_required(login_url='login')
-@allowed_users(allowed_roles=['student'])
-def dashboard_request(request):
-    return render(request, 'dashboard.html')
+@allowed_roles(allowed_roles=['student'])
+def student_dashboard_request(request):
+    return render(request, 'student_dashboard.html')
