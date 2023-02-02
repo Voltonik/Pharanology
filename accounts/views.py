@@ -5,24 +5,22 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import Group
 
-from .forms import CreateUserForm
-from .decorators import unauthenticated_user, allowed_roles
+from .forms import StudentCreationForm
+from .models import AccountRoles
+from .decorators import *
 
 @unauthenticated_user
 def register_request(request):
-    form = CreateUserForm()
+    form = StudentCreationForm()
     
     if request.method == 'POST':
-        form = CreateUserForm(request.POST)
+        form = StudentCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
             
-            group = Group.objects.get(name='student')
-            user.groups.add(group)
-            
             user = authenticate(username=form.cleaned_data['username'], password=form.cleaned_data['password1'])
             login(request, user)
-            return redirect('dashboard')
+            return redirect('student_dashboard')
     
     context = {'form': form}
     return render(request, 'register.html', context)
@@ -37,7 +35,8 @@ def login_request(request):
         
         if user is not None:
             login(request, user)
-            return redirect('dashboard')
+            
+            return redirect('/' if user.role == AccountRoles.STUDENT else 'examiner_dashboard')
         else:
             messages.info(request, 'Username or password is incorrect')
     
@@ -48,6 +47,13 @@ def logout_request(request):
     return redirect('login')
 
 @login_required(login_url='login')
-@allowed_roles(allowed_roles=['student'])
+@allowed_roles([AccountRoles.STUDENT])
 def student_dashboard_request(request):
+    if request.user.role != AccountRoles.STUDENT:
+        return redirect('examiner_dashboard')
     return render(request, 'student_dashboard.html')
+
+@login_required(login_url='login')
+@allowed_roles([AccountRoles.EXAMINER])
+def examiner_dashboard_request(request):
+    return render(request, 'examiner_dashboard.html')

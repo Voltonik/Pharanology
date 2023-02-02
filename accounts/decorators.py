@@ -1,6 +1,7 @@
-from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib import messages
+
+from .models import AccountRoles
 
 def unauthenticated_user(view_func):
 	"""
@@ -8,23 +9,17 @@ def unauthenticated_user(view_func):
 	"""
 	def wrapper_func(request, *args, **kwargs):
 		if request.user.is_authenticated:
-			return redirect('dashboard')
+			return redirect('/' if request.user.role == AccountRoles.STUDENT else 'examiner_dashboard')
 
 		return view_func(request, *args, **kwargs)
 		
 	return wrapper_func
 
-def allowed_roles(allowed_roles, admin_dashboard_fallback = True):
+def allowed_roles(allowed_roles:list):
 	def decorator(view_func):
 		def wrapper_func(request, *args, **kwargs):
-			groups = []
-			if request.user.groups.exists():
-				groups = list(request.user.groups.values_list('name', flat = True))
-			
-			if not set(allowed_roles).isdisjoint(groups):
+			if (request.user.role == AccountRoles.ADMIN) or (request.user.role in allowed_roles):
 				return view_func(request, *args, **kwargs)
-			elif admin_dashboard_fallback and 'admin' in groups:
-				return render(request, 'admin_dashboard.html')
 			
 			messages.error(request, 'You are not authorized to view this page.')
 			return render(request, 'error.html')
