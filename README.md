@@ -20,7 +20,9 @@ Pharanology is an engaging platform for taking exams that eliminates these issue
 ## TODO (Backend)
 - [x] User authentication
 - [x] User roles (student, admin)
-- [ ] Exam architecture (Exam data model, grading, etc..)
+- [x] Exam architecture: Data model & Questions creation panel
+- [ ] Exam architecture: Solving
+- [ ] Exam architecture: Grading
 - [ ] Admin dashboard for managing students, making exams and pushing them to students
 - [ ] Pushing exams
 - [ ] Student dashboard
