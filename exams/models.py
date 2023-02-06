@@ -1,25 +1,71 @@
 from django.db import models
-from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
+from django import forms
 
-# Create your models here.
-# class Student(models.Model):
-# 	class SchoolGrades(models.TextChoices):
-# 		G01 = 'G01'
-# 		G02 = 'G02'
-# 		G03 = 'G03'
-# 		G04 = 'G04'
-# 		G05 = 'G05'
-# 		G06 = 'G06'
-# 		G07 = 'G07'
-# 		G08 = 'G08'
-# 		G09 = 'G09'
-# 		G10 = 'G10'
-# 		G11 = 'G11'
-# 		G12 = 'G12'
+from composite_field import CompositeField
+
+
+from django_jsonform.models.fields import ArrayField
+
+schema_mapping = {
+    "MultipleChoiceQuestion": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+            "mark": {
+                "type": "integer",
+                "title": "Mark",
+            },
+            "prompt": {"title": "Prompt", "type": "string"},
+	    
+			"a": {"title": "A", "type": "string"},
+			"is_true_a": {"title": "Is True", "type": "boolean"},
+			
+			"b": {"title": "B", "type": "string"},
+			"is_true_b": {"title": "Is True", "type": "boolean"},
+			
+			"c": {"title": "C", "type": "string"},
+			"is_true_c": {"title": "Is True", "type": "boolean"},
+			
+			"d": {"title": "D", "type": "string"},
+			"is_true_d": {"title": "Is True", "type": "boolean"},
+        },
+        "required": ["prompt", "choices"],
+    },
+    "TrueFalseQuestion": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+            "mark": {
+                "type": "integer",
+                "title": "Mark",
+            },
+            "prompt": {"title": "Prompt", "type": "string"},
+            "is_true": {"type": "boolean", "default":False},
+        },
+        "required": ["prompt"],
+    },
+}
+
+class Subject(models.Model):
+	name = models.CharField(max_length=255, default="Subject Name")
+
+class Exam(models.Model):
+	subject = models.ManyToManyField(Subject)
 	
-# 	name = models.CharField(max_length=200)
-# 	email = models.CharField(max_length=200)
-# 	grade = models.CharField(max_length=3, choices=SchoolGrades.choices, default=SchoolGrades.G11)
-	
-# 	def __str__(self):
-# 		return self.name
+class Choice(CompositeField):
+    choice = models.TextField(max_length=2048)
+    is_correct = models.BooleanField(default=False)
+    
+class QuestionChoices(models.TextChoices):
+    MultipleChoiceQuestion = 'MultipleChoiceQuestion'
+    TrueFalseQuestion = 'TrueFalseQuestion'
+    
+class Question(models.Model):
+    def default_schema():
+        return schema_mapping
+    
+    exam = models.ForeignKey(Exam, on_delete=models.CASCADE)
+    prompt = models.TextField(max_length=52000)
+    type = models.CharField(choices=QuestionChoices.choices, default=QuestionChoices.MultipleChoiceQuestion, max_length = 80)
+    
+    question = models.JSONField(default=default_schema)

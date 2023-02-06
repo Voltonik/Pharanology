@@ -37,8 +37,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'django.contrib.sessions',
+    
+    'django_jsonform',
+    'external.better_json_widget',
+    
     'accounts',
-    #'exams'
+    'exams'
 ]
 
 MIDDLEWARE = [
