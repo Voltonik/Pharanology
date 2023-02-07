@@ -38,8 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.sessions',
     
-    'django_jsonform',
-    'external.better_json_widget',
+    'utils',
     
     'accounts',
     'exams'

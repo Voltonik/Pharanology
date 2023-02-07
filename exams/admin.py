@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.forms import ModelForm
 
-from external.better_json_widget.widgets import BetterJsonInlineWidget
+from utils.widgets import *
 
 from .models import *
 
@@ -19,7 +19,8 @@ class QuestionAdminForm(ModelForm):
 class QuestionInline(admin.StackedInline):
     model = Question
     form = QuestionAdminForm
-    
+    extra = 0
+
 class ExamAdmin(admin.ModelAdmin):
     inlines = [
         QuestionInline

@@ -116,7 +116,7 @@
     const { createApp } = Vue;
 
     const $ = django.jQuery;
-
+    
     let fieldName = "{{ field_name }}";
     let fieldId = `id_${fieldName}`;
     let originalTextarea = $("#" + fieldId);
@@ -130,6 +130,10 @@
     originalContainer.hide();
 
     $(function () {
+        $(document).on('formset:added', function(event, $row, formsetName) {
+            alert("Formset added {{event}} {{row}} {{formsetName}}");
+        });
+    
         let followField = "{{ follow_field }}";
         let needFollow = followField !== "";
         let followInput = needFollow ? document.getElementById(`id_${followField}`) : null;

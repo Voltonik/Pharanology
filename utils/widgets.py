@@ -48,7 +48,7 @@ class BetterJsonWidget(AdminTextareaWidget):
         if not vue:
             return None
         return Media(js=[vue])
-    
+
     def render(
         self,
         name: str,
@@ -68,7 +68,7 @@ class BetterJsonWidget(AdminTextareaWidget):
         attrs = attrs or {}
         html = super().render(name, value, attrs, renderer)
         template = get_template(def_template)
-        
+
         html += template.render(
             {
                 "field_name": name,
@@ -85,7 +85,8 @@ class BetterJsonInlineWidget(BetterJsonWidget):
         value: Any,
         attrs: Optional[dict[str, Any]] = None,
         renderer: Optional[BaseRenderer] = None,
+        def_template = "better_json_widget/better_json_widget.html"
     ):
         self._follow_field = self._follow_field.join(name.rsplit(name.split('-')[2], 1))
-        
+        print(self._follow_field)
         return super().render(name, value, attrs, renderer, "better_json_widget/better_json_inline_widget.html")
