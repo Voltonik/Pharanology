@@ -7,7 +7,7 @@
         return ret;
     };
 
-    document.addEventListener("DOMNodeInserted", function () {
+    document.addEventListener("DOMContentLoaded", function () {
         let nodes = document.querySelectorAll("[--hideshow-fields]");
 
         for (let node of nodes) {
