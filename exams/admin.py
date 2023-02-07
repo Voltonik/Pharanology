@@ -1,25 +1,31 @@
 from django.contrib import admin
-from django.forms import ModelForm
+from django import forms
 
 from utils.widgets import *
 
 from .models import *
 
-class QuestionAdminForm(ModelForm):
+class QuestionAdminForm(forms.ModelForm):
     class Meta:
-        model = Question
-        fields = "__all__"
         widgets = {
-            "question": BetterJsonInlineWidget(
-                follow_field="type",
-                schema_mapping=schema_mapping,
+            "type": forms.Select(
+                attrs= {
+                    "--hideshow-fields": "choice_A, choice_B, choice_C, choice_D, is_true_A, is_true_B, is_true_C, is_true_D, is_true",
+                    "--show-on-0": "choice_A, choice_B, choice_C, choice_D, is_true_A, is_true_B, is_true_C, is_true_D",
+                    "--show-on-1": "is_true",
+                }
             ),
         }
+    
+    class Media:
+        js = ("js/hideshow.js",)
+
+class QuestionAdmin(admin.ModelAdmin):
+    form = QuestionAdminForm
 
 class QuestionInline(admin.StackedInline):
     model = Question
     form = QuestionAdminForm
-    extra = 0
 
 class ExamAdmin(admin.ModelAdmin):
     inlines = [
@@ -28,4 +34,4 @@ class ExamAdmin(admin.ModelAdmin):
     
 admin.site.register(Subject)
 admin.site.register(Exam, ExamAdmin)
-admin.site.register(Question)
+admin.site.register(Question, QuestionAdmin)

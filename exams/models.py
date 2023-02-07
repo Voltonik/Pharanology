@@ -1,35 +1,7 @@
 from django.db import models
 
+from composite_field import CompositeField
 from accounts.models import SchoolGrades
-
-schema_mapping = {
-    "MultipleChoiceQuestion": {
-        "$schema": "https://json-schema.org/draft/2020-12/schema",
-        "type": "object",
-        "properties": {
-            "a": {"title": "A", "type": "string"},
-            "is_true_a": {"title": "Is True", "type": "boolean"},
-                
-            "b": {"title": "B", "type": "string"},
-            "is_true_b": {"title": "Is True", "type": "boolean"},
-            
-            "c": {"title": "C", "type": "string"},
-            "is_true_c": {"title": "Is True", "type": "boolean"},
-            
-            "d": {"title": "D", "type": "string"},
-            "is_true_d": {"title": "Is True", "type": "boolean"},
-        },
-        "required": [],
-    },
-    "TrueFalseQuestion": {
-        "$schema": "https://json-schema.org/draft/2020-12/schema",
-        "type": "object",
-        "properties": {
-            "is_true": {"type": "boolean", "default":False},
-        },
-        "required": [],
-    },
-}
 
 class Subject(models.Model):
     name = models.CharField(max_length=255, default="Subject Name")
@@ -44,19 +16,30 @@ class Exam(models.Model):
 	
     def __str__(self):
         return f"{self.subject} ({self.for_grade})  {self.scheduled_for}"
-    
-class QuestionChoices(models.TextChoices):
-    MultipleChoiceQuestion = 'MultipleChoiceQuestion'
-    TrueFalseQuestion = 'TrueFalseQuestion'
-    
+
 class Question(models.Model):
-    def default_schema():
-        return schema_mapping
+    CHOICES = [(0, "Multiple Choice"), (1, "True or False")]
     
     exam = models.ForeignKey(Exam, on_delete=models.CASCADE)
 
     prompt = models.TextField(max_length=52000)
     mark = models.DecimalField(default=0, max_digits=4, decimal_places=3)
 
-    type = models.CharField(choices=QuestionChoices.choices, default=QuestionChoices.MultipleChoiceQuestion, max_length = 80)
-    question = models.JSONField(default=default_schema)
+    type = models.IntegerField(choices=CHOICES)
+    
+    #MCQ
+    choice_A = models.TextField(max_length=1024)
+    is_true_A = models.BooleanField(default=False)
+    
+    choice_B = models.TextField(max_length=1024)
+    is_true_B = models.BooleanField(default=False)
+    
+    choice_C = models.TextField(max_length=1024)
+    is_true_C = models.BooleanField(default=False)
+    
+    choice_D = models.TextField(max_length=1024)
+    is_true_D = models.BooleanField(default=False)
+    
+    #True or False
+    is_true = models.BooleanField(default=False)
+    
