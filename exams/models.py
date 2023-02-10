@@ -1,6 +1,6 @@
 from django.db import models
-from django import forms
 
+import json
 from accounts.models import SchoolGrades
 
 QuestionTypes = [(0, "Multiple Choice"), (1, "True or False")]
@@ -12,12 +12,16 @@ class Subject(models.Model):
         return self.name
 
 class Exam(models.Model):
-    subject = models.OneToOneField(Subject, on_delete=models.CASCADE, null=False)
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE, null=False)
     scheduled_for = models.DateTimeField()
     for_grade = models.CharField(choices=SchoolGrades.choices, default=SchoolGrades.G01, max_length=3)
 
     def __str__(self):
         return f"{self.subject} ({self.for_grade})  {self.scheduled_for}"
+    
+    def toJSON(self):
+        return json.dumps(self, default=lambda o: o.__dict__, 
+            sort_keys=True, indent=4)
 
 class Question(models.Model):
     exam = models.ForeignKey(Exam, on_delete=models.CASCADE)
