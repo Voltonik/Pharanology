@@ -160,6 +160,8 @@ EMAIL_HOST_USER = 'markasaadramzy@gmail.com'
 EMAIL_HOST_PASSWORD = 'ahbzjbmtgsfehbgd'
 
 
+# Celery
+
 CELERY_BROKER_URL = 'redis://:O6neMcpGCoSLtAK7vry4TabsaTWov06U@redis-13753.c300.eu-central-1-1.ec2.cloud.redislabs.com:13753/0'
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
