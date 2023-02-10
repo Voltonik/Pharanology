@@ -10,10 +10,10 @@ Pharanology is an engaging platform for taking exams that eliminates these issue
 2. In the prompt, copy and paste the repository's link
 3. Open a terminal in vscode and run `pip install -r requirements.txt`
 4. Now you can run the server and test by running `python manage.py runserver` and go to http://127.0.0.1:8000/
-5. change directory to ./frontend and open the terminal
-6. Type `npm i`. It will install the required frontend files (ONLY ONCE.)
-7. Type `npm run dev`. It will open the frontend live server at the port `5173`
-8. If you want to access the django admin panel, you can create a superuser by running `python manage.py createsuperuser` and entering your username, email and password.
+5. If you want to access the django admin panel, you can create a superuser by running `python manage.py createsuperuser` and entering your username, email and password.
+6. Change directory to ./frontend and open the terminal
+7. Type `npm i`. It will install the required frontend files (ONLY ONCE.)
+8. Type `npm run dev`. It will open the frontend live server at the port `5173`
 9. Make your changes (adding features, fixing issues, etc..)
 10. Commit to the branch (by clicking on commit changes in the third tab in the left panel of vscode)
 
