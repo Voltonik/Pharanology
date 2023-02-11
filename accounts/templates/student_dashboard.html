@@ -5,7 +5,24 @@
 	
 	<p>Hello, {{request.user}}</p>
 	
-	<p>You have no upcoming exams.</p>
+	<h2>Upcoming exams:</h2>
+	<ul>
+	{% for exam in upcoming_exams.all %}
+		<li>
+			{{exam}}
+		</li>
+	{% endfor %}
+	</ul>
+	
+	<br>
+	<h2>Available exams:</h2>
+	<ul>
+	{% for exam in available_exams.all %}
+		<li>
+			{{exam}}
+		</li>
+	{% endfor %}
+	</ul>
 	
 	<span><a  href="{% url 'logout' %}">Logout</a></span>
 </form>

@@ -1,12 +1,10 @@
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import Group
 
 from .forms import StudentCreationForm
-from .models import AccountRoles
+from .models import AccountRoles, StudentUser
 from .decorators import *
 
 @unauthenticated_user
@@ -51,7 +49,8 @@ def logout_request(request):
 def student_dashboard_request(request):
     if request.user.role != AccountRoles.STUDENT:
         return redirect('examiner_dashboard')
-    return render(request, 'student_dashboard.html')
+    student = StudentUser.objects.get(email = request.user.email)
+    return render(request, 'student_dashboard.html', context= {"upcoming_exams": student.upcoming_exams, "available_exams": student.available_exams})
 
 @login_required(login_url='login')
 @allowed_roles([AccountRoles.EXAMINER])

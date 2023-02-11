@@ -1,7 +1,6 @@
 from django.db import models
 
-import json
-from accounts.models import SchoolGrades
+from accounts.enums import SchoolGrades
 
 QuestionTypes = [(0, "Multiple Choice"), (1, "True or False")]
 
@@ -15,22 +14,16 @@ class Exam(models.Model):
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE, null=False)
     scheduled_for = models.DateTimeField()
     for_grade = models.CharField(choices=SchoolGrades.choices, default=SchoolGrades.G01, max_length=3)
-
+    duration = models.DecimalField(default=2, max_digits=5, decimal_places=3)
+    
     def __str__(self):
         return f"{self.subject} ({self.for_grade})  {self.scheduled_for}"
-    
-    def __dict__(self):
-        return {
-            "subject": self.subject,
-            "scheduled_for": self.scheduled_for,
-            "for_grade": self.for_grade,
-        }
 
 class Question(models.Model):
     exam = models.ForeignKey(Exam, on_delete=models.CASCADE)
 
     prompt = models.TextField(max_length=52000)
-    mark = models.DecimalField(default=0, max_digits=4, decimal_places=3)
+    mark = models.DecimalField(default=0, max_digits=7, decimal_places=3)
 
     type = models.IntegerField(choices=QuestionTypes, default=0, null=False)
 

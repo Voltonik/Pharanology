@@ -1,24 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 
-class AccountRoles(models.TextChoices):
-    STUDENT = "STUDENT"
-    EXAMINER = "EXAMINER"
-    ADMIN = "ADMIN"
-
-class SchoolGrades(models.TextChoices):
-    G01 = 'G01'
-    G02 = 'G02'
-    G03 = 'G03'
-    G04 = 'G04'
-    G05 = 'G05'
-    G06 = 'G06'
-    G07 = 'G07'
-    G08 = 'G08'
-    G09 = 'G09'
-    G10 = 'G10'
-    G11 = 'G11'
-    G12 = 'G12'
+from exams.models import Exam
+from .enums import *
 
 class BaseUserManager(BaseUserManager):    
     def create_superuser(self, username, first_name, last_name, email, password=None):
@@ -109,8 +93,12 @@ class StudentManager(BaseUserManager):
 class StudentUser(BaseUser):
     grade = models.CharField(max_length=3, choices=SchoolGrades.choices, default=SchoolGrades.G01)
     
+    available_exams = models.ManyToManyField(Exam, related_name='available_exams')
+    upcoming_exams = models.ManyToManyField(Exam, related_name='upcoming_exams')
+    
     class Meta : 
         proxy = False
+        
     objects = StudentManager()
       
     def save(self , *args , **kwargs):
