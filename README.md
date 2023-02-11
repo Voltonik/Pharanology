@@ -7,15 +7,17 @@ Pharanology is an engaging platform for taking exams that eliminates these issue
 ## How to test or contribute
 
 1. Open Visual Studio Code and click on "Clone Git Repository..." in the start up page.
-2. In the prompt, copy and paste the repository's link
+2. In the prompt, copy and paste the repository's link.
 3. Open a terminal in vscode and run `pip install -r requirements.txt`
-4. Now you can run the server and test by running `python manage.py runserver` and go to http://127.0.0.1:8000/
-5. change directory to ./frontend and open the terminal
-6. Type `npm i`. It will install the required frontend files (ONLY ONCE.)
-7. Type `npm run dev`. It will open the frontend live server at the port `5173`
-8. If you want to access the django admin panel, you can create a superuser by running `python manage.py createsuperuser` and entering your username, email and password.
-9. Make your changes (adding features, fixing issues, etc..)
-10. Commit to the branch (by clicking on commit changes in the third tab in the left panel of vscode)
+4. Split the terminal to 3 terminals.
+5. On the first terminal, run `cd .\frontend\`
+6. Run `npm i`. It will install the required frontend files (ONLY ONCE.)
+7. Run `npm run dev`, It will open the frontend live server at the port `5173`
+8. On the second terminal run `python manage.py runserver` and go to http://127.0.0.1:8000/
+9. On the third terminal run `python -m celery -A Pharanology worker -l info -P eventlet`
+10. If you want to access the django admin panel, you can create a superuser by running `python manage.py createsuperuser` and entering your username, email and password.
+11. Make your changes (adding features, fixing issues, etc..)
+12. Commit & Push to the branch (by clicking on commit changes in the third tab in the left panel of vscode)
 
 ## TODO (Backend)
 

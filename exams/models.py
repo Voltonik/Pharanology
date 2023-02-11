@@ -19,9 +19,12 @@ class Exam(models.Model):
     def __str__(self):
         return f"{self.subject} ({self.for_grade})  {self.scheduled_for}"
     
-    def toJSON(self):
-        return json.dumps(self, default=lambda o: o.__dict__, 
-            sort_keys=True, indent=4)
+    def __dict__(self):
+        return {
+            "subject": self.subject,
+            "scheduled_for": self.scheduled_for,
+            "for_grade": self.for_grade,
+        }
 
 class Question(models.Model):
     exam = models.ForeignKey(Exam, on_delete=models.CASCADE)
