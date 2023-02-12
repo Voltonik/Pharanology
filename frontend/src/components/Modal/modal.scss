@@ -1,0 +1,9 @@
+.modal {
+  border-radius: 1rem;
+
+  background-color: white;
+  color: tint-color($primary, 20%);
+  a {
+    color: tint-color($primary, 20%);
+  }
+}

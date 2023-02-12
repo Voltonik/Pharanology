@@ -1,0 +1,35 @@
+@import "@/custom.scss";
+@import "@/utils.scss";
+@import "@components/Modal/modal.scss";
+@import "@components/Forms/forms.scss";
+#sign-in {
+  @include gradient;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .modal {
+    padding: 2rem 5rem;
+    height: fit-content;
+    min-width: 50%;
+    button[type="submit"] {
+      width: 100%;
+    }
+    #modal-sign-up {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-decoration: none;
+    }
+    .forgotten-password {
+      display: block;
+      text-align: center;
+      a {
+        text-decoration: none;
+        &:hover {
+          color: white;
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+}
