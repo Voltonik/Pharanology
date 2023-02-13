@@ -47,7 +47,8 @@ Pharanology is an engaging platform for taking exams that eliminates these issue
 - [ ] Password reset Done
 - [ ] Password reset form
 - [ ] Password reset sent
-- [ ] Password reset
+- [x] Password reset
+  - [ ] Connect to Backend
 - [x] Register
   - [ ] Add Verification
 - [ ] Student Dashboard
