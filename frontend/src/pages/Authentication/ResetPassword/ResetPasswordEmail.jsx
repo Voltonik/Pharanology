@@ -4,6 +4,8 @@ import "./reset-password-email.scss";
 // react-bootstrap
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+// Components
+import AuthenticationModal from "@components/AuthenticationModal/AuthenticationModal";
 
 function ResetPasswordEmail() {
   const container = useRef(null);
@@ -25,7 +27,7 @@ function ResetPasswordEmail() {
   }
   return (
     <div id="reset-password-email" ref={container}>
-      <div className="modal shadow-lg">
+      <AuthenticationModal hasShadow={true}>
         <h3>Reset Password</h3>
         <p className="mb-2">
           Please enter your email address. So we can send you the instructions
@@ -45,7 +47,7 @@ function ResetPasswordEmail() {
             Reset Password
           </Button>
         </Form>
-      </div>
+      </AuthenticationModal>
     </div>
   );
 }

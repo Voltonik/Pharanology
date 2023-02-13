@@ -5,6 +5,8 @@ import { Link } from "react-router-dom";
 // react-bootstrap
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+// Components
+import AuthenticationModal from "@components/AuthenticationModal/AuthenticationModal";
 // scss
 import "./sign-in.scss";
 
@@ -31,7 +33,7 @@ function SignIn() {
   }
   return (
     <div id="sign-in" ref={container}>
-      <div className="modal shadow-lg">
+      <AuthenticationModal hasShadow={true}>
         <Form onSubmit={handleSubmit}>
           <Form.Group className="mb-3" controlId="username">
             <Form.Label>Username</Form.Label>
@@ -63,7 +65,7 @@ function SignIn() {
         <Link id="modal-sign-up" to="/sign-up">
           <Button variant="success">Create a new account</Button>
         </Link>
-      </div>
+      </AuthenticationModal>
     </div>
   );
 }

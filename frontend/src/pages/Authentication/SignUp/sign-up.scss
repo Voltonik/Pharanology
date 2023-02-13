@@ -1,19 +1,12 @@
 @import "@/custom.scss";
 @import "@/utils.scss";
-@import "@components/Modal/modal.scss";
-@import "@components/Forms/forms.scss";
 #sign-up {
   @include gradient;
   display: flex;
   justify-content: center;
-  align-items: center;
-  .modal {
-    padding: 0.5rem 5rem;
-    height: fit-content;
-    min-width: 50%;
-    button[type="submit"] {
-      width: 100%;
-    }
+  .authentication-modal {
+    padding-top: 0.4rem;
+    padding-bottom: 0.4rem;
     .already-have-an-account {
       display: block;
       text-align: center;
