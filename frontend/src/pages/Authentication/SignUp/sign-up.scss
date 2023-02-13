@@ -2,31 +2,24 @@
 @import "@/utils.scss";
 @import "@components/Modal/modal.scss";
 @import "@components/Forms/forms.scss";
-#sign-in {
+#sign-up {
   @include gradient;
   display: flex;
   justify-content: center;
   align-items: center;
   .modal {
-    padding: 2rem 5rem;
+    padding: 0.5rem 5rem;
     height: fit-content;
     min-width: 50%;
     button[type="submit"] {
       width: 100%;
     }
-    #modal-sign-up {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      text-decoration: none;
-    }
-    .forgotten-password {
+    .already-have-an-account {
       display: block;
       text-align: center;
       a {
         text-decoration: none;
         &:hover {
-          color: white;
           text-decoration: underline;
         }
       }
