@@ -43,13 +43,13 @@ Pharanology is an engaging platform for taking exams that eliminates these issue
 ~- [ ] Error~ (removed for simplicity; using simple Http Responses instead, no fancy designs needed)
 - [ ] Examiner Dashboard
 - [x] Login
-  - [ ] Add Verification
+- [ ] Add Verification
 - [x] Password reset Done
 - [x] Password reset form
 - [x] Password reset sent
 - [x] Password reset
-  - [ ] Connect to Backend
+- [ ] Connect to Backend
 - [x] Register
-  - [ ] Add Verification
+- [ ] Add Verification
 - [ ] Student Dashboard
 - [ ] Exam
