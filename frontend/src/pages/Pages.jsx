@@ -9,6 +9,7 @@ import ResetPasswordEmail from "./Authentication/ResetPassword/ResetPasswordEmai
 import ResetPasswordSent from "./Authentication/ResetPassword/ResetPasswordSent";
 import ResetPasswordComplete from "./Authentication/ResetPassword/ResetPasswordComplete";
 import ResetPasswordResetForm from "./Authentication/ResetPassword/ResetPasswordResetForm";
+import Error from "./Error/Error";
 
 function Pages() {
   return (
@@ -33,6 +34,8 @@ function Pages() {
         path="/reset-password-reset-form"
         element={<ResetPasswordResetForm />}
       ></Route>
+      {/* Not matching the previous routes: */}
+      <Route path="*" element={<Error />} />
     </Routes>
   );
 }
