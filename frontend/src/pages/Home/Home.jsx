@@ -1,14 +1,11 @@
 import React from "react";
-import Hero from "@sections/Hero/Hero.jsx";
-import WhyUs from "@sections/WhyUs/WhyUs.jsx";
+import UnknownUserHome from "./UnknownUserHome";
+import StudentDashboard from "./StudentDashboard";
 
 function Home() {
-  return (
-    <>
-      <Hero />
-      <WhyUs />
-    </>
-  );
+  const isLogged = true;
+  if (isLogged) return <StudentDashboard />;
+  return <UnknownUserHome />;
 }
 
 export default Home;
