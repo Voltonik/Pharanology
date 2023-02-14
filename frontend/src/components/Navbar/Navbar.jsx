@@ -29,11 +29,11 @@ function Navbar() {
               Contact us
             </NavLink>
 
-            <NavLink className="nav-link" to="sign-in">
-              Sign in
+            <NavLink className="nav-link" to="login">
+              Login
             </NavLink>
-            <NavLink className="nav-link" to="sign-up">
-              Sign up
+            <NavLink className="nav-link" to="register">
+              Register
             </NavLink>
           </Nav>
         </BootstrapNavbar.Collapse>

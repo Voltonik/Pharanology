@@ -8,9 +8,9 @@ import Form from "react-bootstrap/Form";
 import AuthenticationContainer from "@components/AuthenticationContainer/AuthenticationContainer";
 import AuthenticationModal from "@components/AuthenticationModal/AuthenticationModal";
 // scss
-import "./sign-up.scss";
+import "./register.scss";
 
-function SignIn() {
+function Register() {
   const [details, setDetails] = useState({
     firstName: "",
     lastName: "",
@@ -56,9 +56,9 @@ function SignIn() {
     console.log(details);
   }
   return (
-    <AuthenticationContainer id="sign-up">
+    <AuthenticationContainer id="register">
       <AuthenticationModal hasShadow={true}>
-        <Form className="container" onSubmit={handleSubmit}>
+        <Form method="POST" className="container" onSubmit={handleSubmit}>
           <div className="row">
             <div className="col-6">
               <Form.Group controlId="firstName">
@@ -143,7 +143,7 @@ function SignIn() {
             </Form.Select>
           </Form.Group>
           <Button variant="primary" type="submit">
-            Sign up
+            Register
           </Button>
         </Form>
         <div className="already-have-an-account">
@@ -156,4 +156,4 @@ function SignIn() {
   );
 }
 
-export default SignIn;
+export default Register;
