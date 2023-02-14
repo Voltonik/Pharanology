@@ -7,7 +7,6 @@ from django.core.mail import send_mail
 from .tasks import push_exam
 from .models import *
 
-from datetime import datetime
 from datetime import timedelta
 
 from accounts.models import StudentUser
@@ -21,7 +20,7 @@ class QuestionAdminForm(forms.ModelForm):
                     "--show-on-0": "choice_A, choice_B, choice_C, choice_D, is_true_A, is_true_B, is_true_C, is_true_D",
                     "--show-on-1": "is_true",
                 }
-            ),
+            )
         }
         
     class Media:
@@ -64,9 +63,9 @@ class ExamAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         messages.add_message(request, messages.INFO, f"scheduled exam {obj.for_grade} {obj.subject} for {obj.scheduled_for}")
         
-        push_exam.apply_async((obj.pk,), eta=obj.scheduled_for)
-        
         super().save_model(request, obj, form, change)
+        
+        push_exam.apply_async((obj.pk,), eta=obj.scheduled_for)
         
         target_students = StudentUser.objects.filter(grade = obj.for_grade)
         target_emails = list(target_students.values_list('email', flat=True))

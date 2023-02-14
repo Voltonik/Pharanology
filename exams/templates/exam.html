@@ -1,0 +1,51 @@
+{% load exam_tags %}
+
+<h3>Exam</h3>
+
+<form method="POST" action="">
+	{% csrf_token %}
+	
+	<ol>
+		{% for question in questions %}
+			<li>
+			{% if question.type == 0 %}
+				<p>{{question.prompt}}</p>
+			
+				{% with 'choice_A_'|addstr:forloop.counter0 as a_id %}
+				{% with 'choice_B_'|addstr:forloop.counter0 as b_id %}
+				{% with 'choice_C_'|addstr:forloop.counter0 as c_id %}
+				{% with 'choice_D_'|addstr:forloop.counter0 as d_id %}
+				
+				{% with 'mcq_'|addstr:forloop.counter0 as mcq %}
+				
+				<input type="radio" id={{a_id}} name={{mcq}} value={{a_id}}>
+				<label for={{a_id}}>{{question.choice_A}}</label><br>
+				<input type="radio" id={{b_id}} name={{mcq}} value={{b_id}}>
+				<label for={{b_id}}>{{question.choice_B}}</label><br>
+				<input type="radio" id={{c_id}} name={{mcq}} value={{c_id}}>
+				<label for={{c_id}}>{{question.choice_C}}</label><br>
+				<input type="radio" id={{d_id}} name={{mcq}} value={{d_id}}>
+				<label for={{d_id}}>{{question.choice_D}}</label><br>
+				
+				{% endwith %}
+				{% endwith %}
+				{% endwith %}
+				{% endwith %}
+				{% endwith %}
+			{% elif question.type == 1 %}
+				{% with 'is_true_'|addstr:forloop.counter0 as is_true_id %}
+				{% with 'true_or_false_'|addstr:forloop.counter0 as trueorfalse %}
+			
+				<input type="checkbox" id={{is_true_id}} name={{trueorfalse}} value={{is_true_id}}>
+				<label for={{is_true_id}}>{{question.prompt}}</label><br>
+				
+				{% endwith %}
+				{% endwith %}
+			{% endif %}
+			</li>
+			<hr>
+		{% endfor %}
+	</ol>
+	
+	<input type="submit" name="Submit">
+</form>

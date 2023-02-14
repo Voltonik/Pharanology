@@ -50,7 +50,10 @@ def student_dashboard_request(request):
     if request.user.role != AccountRoles.STUDENT:
         return redirect('examiner_dashboard')
     student = StudentUser.objects.get(email = request.user.email)
-    return render(request, 'student_dashboard.html', context= {"upcoming_exams": student.upcoming_exams, "available_exams": student.available_exams})
+    
+    exams_history = {k: v for k, v in student.exams_history.items() if v["show"] == True}
+    print(exams_history)
+    return render(request, 'student_dashboard.html', context= {"upcoming_exams": student.upcoming_exams, "available_exams": student.available_exams, "exams_history": exams_history})
 
 @login_required(login_url='login')
 @allowed_roles([AccountRoles.EXAMINER])

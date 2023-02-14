@@ -1,0 +1,56 @@
+{% load exam_tags %}
+
+<h3>Results</h3>
+
+<form method="POST" action="">
+	{% csrf_token %}
+	<p>Total: {{student_exam_data.marks}}/{{student_exam_data.max_marks}}</p>
+	<ol>
+		{% for question in questions %}
+			<li>
+			{% if question.type == 0 %}
+				<p>{{question.prompt}}</p>
+				
+				{% with 'choice_A_'|addstr:forloop.counter0 as a_id %}
+				{% with 'choice_B_'|addstr:forloop.counter0 as b_id %}
+				{% with 'choice_C_'|addstr:forloop.counter0 as c_id %}
+				{% with 'choice_D_'|addstr:forloop.counter0 as d_id %}
+				
+				{% with 'mcq_'|addstr:forloop.counter0 as mcq %}
+				
+				<input type="radio" id={{a_id}} name={{mcq}} value={{a_id}} disabled {% if a_id in student_exam_data.chosen %}checked="checked"{% endif %}">
+				<label for={{a_id}}>{{question.choice_A}} {% if student_exam_data.corrections|index:forloop.counter0 != 0 and a_id in student_exam_data.chosen %}   (X) {% endif %}</label><br>
+				<input type="radio" id={{b_id}} name={{mcq}} value={{b_id}} disabled {% if b_id in student_exam_data.chosen %}checked="checked"{% endif %}>
+				<label for={{b_id}}>{{question.choice_B}} {% if student_exam_data.corrections|index:forloop.counter0 != 1 and b_id in student_exam_data.chosen%}   (X) {% endif %}</label><br>
+				<input type="radio" id={{c_id}} name={{mcq}} value={{c_id}} disabled {% if c_id in student_exam_data.chosen %}checked="checked"{% endif %}>
+				<label for={{c_id}}>{{question.choice_C}} {% if student_exam_data.corrections|index:forloop.counter0 != 2 and c_id in student_exam_data.chosen%}   (X) {% endif %}</label><br>
+				<input type="radio" id={{d_id}} name={{mcq}} value={{d_id}} disabled {% if d_id in student_exam_data.chosen %}checked="checked"{% endif %}>
+				<label for={{d_id}}>{{question.choice_D}} {% if student_exam_data.corrections|index:forloop.counter0 != 3 and d_id in student_exam_data.chosen %}   (X) {% endif %}</label><br>
+				
+				{% endwith %}
+				{% endwith %}
+				{% endwith %}
+				{% endwith %}
+				{% endwith %}
+			{% elif question.type == 1 %}
+				{% with 'is_true_'|addstr:forloop.counter0 as is_true_id %}
+				{% with 'true_or_false_'|addstr:forloop.counter0 as trueorfalse %}
+				
+				{% if is_true_id in student_exam_data.chosen %}
+					<input type="checkbox" id={{is_true_id}} name={{trueorfalse}} value={{is_true_id}} disabled checked="checked">
+					<label for={{is_true_id}}>{{question.prompt}} {% if not student_exam_data.corrections|index:forloop.counter0 %}   (X) {% endif %}</label><br>
+				{% else %}
+					<input type="checkbox" id={{is_true_id}} name={{trueorfalse}} value={{is_true_id}} disabled>
+					<label for={{is_true_id}}>{{question.prompt}} {% if student_exam_data.corrections|index:forloop.counter0 %}   (X) {% endif %}</label><br>
+				{% endif %}
+				
+				{% endwith %}
+				{% endwith %}
+			{% endif %}
+			</li>
+			<hr>
+		{% endfor %}
+	</ol>
+	
+	<span><a  href="{% url 'student_dashboard' %}">Back</a></span>
+</form>	

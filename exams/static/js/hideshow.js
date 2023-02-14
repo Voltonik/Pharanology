@@ -10,9 +10,8 @@ document.addEventListener("DOMContentLoaded", handleHideShow);
 document.addEventListener("formset:added", handleHideShow);
 
 function handleHideShow() {
-  let inlineModels = document.querySelectorAll(".inline-related");
-  if (inlineModels.length === 0)
-    inlineModels = document.querySelectorAll(".module");
+  let inlineModels = document.querySelectorAll(".inline-related, .module");
+  
   for (let inlineModel of inlineModels) {
     let nodes = inlineModel.querySelectorAll("[--hideshow-fields]");
     for (let node of nodes) {

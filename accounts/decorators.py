@@ -1,5 +1,5 @@
-from django.shortcuts import render, redirect
-from django.contrib import messages
+from django.shortcuts import redirect
+from django.http import HttpResponse
 
 from .models import AccountRoles
 
@@ -21,8 +21,7 @@ def allowed_roles(allowed_roles:list):
 			if (request.user.role == AccountRoles.ADMIN) or (request.user.role in allowed_roles):
 				return view_func(request, *args, **kwargs)
 			
-			messages.error(request, 'You are not authorized to view this page.')
-			return render(request, 'error.html')
+			return HttpResponse('You are not authorized to view this page.')
 		
 		return wrapper_func
 	return decorator

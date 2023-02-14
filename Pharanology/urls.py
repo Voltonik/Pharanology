@@ -24,5 +24,6 @@ urlpatterns = [
     #     r"^.*$",
     #     TemplateView.as_view(template_name="base.html"),
     # )
-    path("", include("accounts.urls"))
+    path("", include("accounts.urls")),
+    path("", include("exams.urls"))
 ]

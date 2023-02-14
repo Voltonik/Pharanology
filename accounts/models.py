@@ -93,8 +93,10 @@ class StudentManager(BaseUserManager):
 class StudentUser(BaseUser):
     grade = models.CharField(max_length=3, choices=SchoolGrades.choices, default=SchoolGrades.G01)
     
-    available_exams = models.ManyToManyField(Exam, related_name='available_exams')
-    upcoming_exams = models.ManyToManyField(Exam, related_name='upcoming_exams')
+    available_exams = models.ManyToManyField(Exam, related_name='available_exams', blank=True)
+    upcoming_exams = models.ManyToManyField(Exam, related_name='upcoming_exams', blank=True)
+    
+    exams_history = models.JSONField(default=dict, blank=True)
     
     class Meta : 
         proxy = False

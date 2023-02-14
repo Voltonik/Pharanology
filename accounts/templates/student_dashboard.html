@@ -1,3 +1,5 @@
+{% load exam_tags %}
+
 <h3>Student Dashboard</h3>
 
 <form method="POST" action="">
@@ -19,10 +21,21 @@
 	<ul>
 	{% for exam in available_exams.all %}
 		<li>
-			{{exam}}
+			<a href="{% url 'begin_exam' exam|hash %}">{{exam}}</a>
 		</li>
 	{% endfor %}
 	</ul>
+	
+	<br>
+	<h2>Exams history: (it's up to the examiner whether or not the exam is saved in your history)</h2>
+	<ul>	
+	{% for exam_hash, exam_data in exams_history.items %}
+		<li>
+			<a href="{% url 'results' exam_hash %}">{{exam_data.exam_name}}</a>
+		</li>
+	{% endfor %}
+	</ul>
+	<br>
 	
 	<span><a  href="{% url 'logout' %}">Logout</a></span>
 </form>
