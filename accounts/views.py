@@ -1,22 +1,16 @@
 from django.contrib.auth import authenticate, login, logout
-from django.shortcuts import render
 
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 
-from .models import StudentUser
 from .serializers import *
 from .decorators import *
-
-@api_view(['GET', 'POST'])
-def index(request):
-    return render(request, 'base.html')
 
 
 @api_view(['GET', 'POST'])
 def register_request(request):
     if request.method != "POST":
-        return render(request, 'base.html')
+        return Response(None)
     
     serializer = StudentUserSerializer(data = request.data)
     
@@ -34,7 +28,7 @@ def register_request(request):
 @api_view(['GET', 'POST'])
 def login_request(request):
     if request.method != "POST":
-        return render(request, 'base.html')
+        return Response(None)
     
     serializer = LoginSerializer(data = request.data, context={ 'request': request })
     
