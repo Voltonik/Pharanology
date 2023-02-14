@@ -6,8 +6,8 @@ import { Link } from "react-router-dom";
 function Hero() {
   return (
     <Height100vh id="hero">
-      <div className="container">
-        <div className="row">
+      <Height100vh className="container">
+        <Height100vh className="row">
           <div className="col-12 col-md-8 col-typography">
             <h1 className="mb-3">Get the best examining experience</h1>
             <p className="mb-3">
@@ -28,8 +28,8 @@ function Hero() {
               className="logo img-fluid"
             />
           </div>
-        </div>
-      </div>
+        </Height100vh>
+      </Height100vh>
     </Height100vh>
   );
 }

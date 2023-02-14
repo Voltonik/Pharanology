@@ -5,6 +5,6 @@ export function navbarRect() {
 
 export function sectionHeight100vh(section) {
   let navRect = navbarRect();
-  section.style.height = `calc(100vh - ${navRect.height}px)`;
+  section.style.minHeight = `calc(100vh - ${navRect.height}px)`;
   return `calc(100vh - ${navRect.height}px)`;
 }
