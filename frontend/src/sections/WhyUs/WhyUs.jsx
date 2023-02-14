@@ -52,7 +52,10 @@ function WhyUs() {
           </Card>
         </div>
         <div className="row d-flex justify-content-center align-items-center">
-          <Link className="btn btn-primary btn-get-started fw-500 text-uppercase">
+          <Link
+            to="/sign-up"
+            className="btn btn-primary btn-get-started fw-500 text-uppercase"
+          >
             Get started
           </Link>
         </div>
