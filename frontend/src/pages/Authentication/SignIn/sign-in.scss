@@ -2,9 +2,6 @@
 @import "@/utils.scss";
 
 #sign-in {
-  @include gradient;
-  display: flex;
-  justify-content: center;
   .authentication-modal {
     #modal-sign-up {
       display: flex;

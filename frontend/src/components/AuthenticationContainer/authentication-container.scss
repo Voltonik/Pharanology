@@ -1,7 +1,7 @@
 @import "@/custom.scss";
 @import "@/utils.scss";
 
-#reset-password-email {
+.authentication-container {
   @include gradient;
   display: flex;
   justify-content: center;

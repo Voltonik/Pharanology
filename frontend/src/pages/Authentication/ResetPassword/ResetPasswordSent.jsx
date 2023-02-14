@@ -1,19 +1,11 @@
-import React, { useRef, useEffect } from "react";
-import { sectionHeight100vh } from "@/utils.js";
-import "./reset-password-sent.scss";
+import React from "react";
 // Components
+import AuthenticationContainer from "@components/AuthenticationContainer/AuthenticationContainer";
 import AuthenticationModal from "@components/AuthenticationModal/AuthenticationModal";
 
 function ResetPasswordSent() {
-  const container = useRef(null);
-  useEffect(() => {
-    sectionHeight100vh(container.current);
-    document.addEventListener("resize", () => {
-      sectionHeight100vh(container.current);
-    });
-  }, []);
   return (
-    <div id="reset-password-sent" ref={container}>
+    <AuthenticationContainer>
       <AuthenticationModal hasShadow={true}>
         <h3>Password reset sent</h3>
 
@@ -28,7 +20,7 @@ function ResetPasswordSent() {
           address you registered with, and check your spam folder.
         </p>
       </AuthenticationModal>
-    </div>
+    </AuthenticationContainer>
   );
 }
 

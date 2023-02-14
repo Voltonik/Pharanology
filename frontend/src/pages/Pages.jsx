@@ -7,6 +7,7 @@ import SignIn from "./Authentication/SignIn/SignIn";
 import SignUp from "./Authentication/SignUp/SignUp";
 import ResetPasswordEmail from "./Authentication/ResetPassword/ResetPasswordEmail";
 import ResetPasswordSent from "./Authentication/ResetPassword/ResetPasswordSent";
+import ResetPasswordComplete from "./Authentication/ResetPassword/ResetPasswordComplete";
 
 function Pages() {
   return (
@@ -22,6 +23,10 @@ function Pages() {
       <Route
         path="/reset-password-sent"
         element={<ResetPasswordSent />}
+      ></Route>
+      <Route
+        path="/reset-password-complete"
+        element={<ResetPasswordComplete />}
       ></Route>
     </Routes>
   );

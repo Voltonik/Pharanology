@@ -1,21 +1,14 @@
-import React, { useRef, useEffect, useState } from "react";
-import { sectionHeight100vh } from "@/utils.js";
-import "./reset-password-email.scss";
+import React, {useState } from "react";
 // react-bootstrap
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 // Components
+
+import AuthenticationContainer from "@components/AuthenticationContainer/AuthenticationContainer";
 import AuthenticationModal from "@components/AuthenticationModal/AuthenticationModal";
 
 function ResetPasswordEmail() {
-  const container = useRef(null);
   const [details, setDetails] = useState({ email: "" });
-  useEffect(() => {
-    sectionHeight100vh(container.current);
-    document.addEventListener("resize", () => {
-      sectionHeight100vh(container.current);
-    });
-  }, []);
   function handleChange(e) {
     const { name, value } = e.target;
     setDetails((prev) => {
@@ -26,7 +19,7 @@ function ResetPasswordEmail() {
     e.preventDefault();
   }
   return (
-    <div id="reset-password-email" ref={container}>
+    <AuthenticationContainer>
       <AuthenticationModal hasShadow={true}>
         <h3>Reset Password</h3>
         <p className="mb-2">
@@ -48,7 +41,7 @@ function ResetPasswordEmail() {
           </Button>
         </Form>
       </AuthenticationModal>
-    </div>
+    </AuthenticationContainer>
   );
 }
 

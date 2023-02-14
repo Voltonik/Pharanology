@@ -1,17 +1,16 @@
-import React, { useEffect, useRef, useState } from "react";
-import { sectionHeight100vh } from "@/utils.js";
+import React, { useState } from "react";
 // react-router-dom
 import { Link } from "react-router-dom";
 // react-bootstrap
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 // Components
+import AuthenticationContainer from "@components/AuthenticationContainer/AuthenticationContainer";
 import AuthenticationModal from "@components/AuthenticationModal/AuthenticationModal";
 // scss
 import "./sign-up.scss";
 
 function SignIn() {
-  const container = useRef(null);
   const [details, setDetails] = useState({
     firstName: "",
     lastName: "",
@@ -21,12 +20,6 @@ function SignIn() {
     confirmPassword: "",
     grade: "",
   });
-  useEffect(() => {
-    sectionHeight100vh(container.current);
-    document.addEventListener("resize", () => {
-      sectionHeight100vh(container.current);
-    });
-  }, []);
   function handleChange(e) {
     const { name, value } = e.target;
     setDetails((prev) => {
@@ -63,7 +56,7 @@ function SignIn() {
     console.log(details);
   }
   return (
-    <div id="sign-up" ref={container}>
+    <AuthenticationContainer id="sign-up">
       <AuthenticationModal hasShadow={true}>
         <Form className="container" onSubmit={handleSubmit}>
           <div className="row">
@@ -159,7 +152,7 @@ function SignIn() {
           </Link>
         </div>
       </AuthenticationModal>
-    </div>
+    </AuthenticationContainer>
   );
 }
 

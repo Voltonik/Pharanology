@@ -1,5 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
-import { sectionHeight100vh } from "@/utils.js";
+import React, { useState } from "react";
 // react-router-dom
 import { Link } from "react-router-dom";
 // react-bootstrap
@@ -9,19 +8,13 @@ import Form from "react-bootstrap/Form";
 import AuthenticationModal from "@components/AuthenticationModal/AuthenticationModal";
 // scss
 import "./sign-in.scss";
+import AuthenticationContainer from "../../../components/AuthenticationContainer/AuthenticationContainer";
 
 function SignIn() {
-  const container = useRef(null);
   const [details, setDetails] = useState({
     username: "",
     password: "",
   });
-  useEffect(() => {
-    sectionHeight100vh(container.current);
-    document.addEventListener("resize", () => {
-      sectionHeight100vh(container.current);
-    });
-  }, []);
   function handleChange(e) {
     const { name, value } = e.target;
     setDetails((prev) => {
@@ -32,7 +25,7 @@ function SignIn() {
     e.preventDefault();
   }
   return (
-    <div id="sign-in" ref={container}>
+    <AuthenticationContainer id="sign-in">
       <AuthenticationModal hasShadow={true}>
         <Form onSubmit={handleSubmit}>
           <Form.Group className="mb-3" controlId="username">
@@ -66,7 +59,7 @@ function SignIn() {
           <Button variant="success">Create a new account</Button>
         </Link>
       </AuthenticationModal>
-    </div>
+    </AuthenticationContainer>
   );
 }
 
