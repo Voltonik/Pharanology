@@ -7,14 +7,7 @@
 // 2. Include any default variable overrides here
 $primary: #a17608;
 $body-color: black;
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-  color: $primary;
-}
+
 // 3. Include remainder of required Bootstrap stylesheets (including any separate color mode stylesheets)
 @import "@bootstrap/scss/variables";
 
@@ -24,3 +17,12 @@ h6 {
 @import "@bootstrap/scss/maps";
 @import "@bootstrap/scss/mixins";
 @import "@bootstrap/scss/root";
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: $primary;
+}
