@@ -15,7 +15,7 @@ function ResetPasswordSent() {
   return (
     <div id="reset-password-sent" ref={container}>
       <AuthenticationModal hasShadow={true}>
-        <h3 className="text-success">Password reset sent</h3>
+        <h3>Password reset sent</h3>
 
         <p>
           We've emailed you instructions for settings your password, if an
