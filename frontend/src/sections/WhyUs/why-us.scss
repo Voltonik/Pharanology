@@ -1,0 +1,19 @@
+@import "@/custom.scss";
+@import "@/typography.scss";
+@import "@bootstrap/scss/card.scss";
+#why-us {
+  background: linear-gradient(to bottom, #fff, tint-color($primary, 70%));
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  .section-content {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    .card {
+      padding: 0;
+    }
+  }
+  .btn-get-started {
+    width: fit-content;
+  }
+}
