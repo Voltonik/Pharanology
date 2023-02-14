@@ -3,8 +3,8 @@ import Home from "./Home/Home";
 import ContactUs from "./ContactUs/ContactUs";
 import Dashboard from "./Dashboard/Dashboard";
 import Exams from "./Exams/Exams";
-import SignIn from "./Authentication/SignIn/SignIn";
-import SignUp from "./Authentication/SignUp/SignUp";
+import Login from "./Authentication/Login/Login";
+import Register from "./Authentication/Register/Register";
 import ResetPasswordEmail from "./Authentication/ResetPassword/ResetPasswordEmail";
 import ResetPasswordSent from "./Authentication/ResetPassword/ResetPasswordSent";
 import ResetPasswordComplete from "./Authentication/ResetPassword/ResetPasswordComplete";
@@ -19,8 +19,8 @@ function Pages() {
       <Route path="/exams" element={<Exams />}></Route>
       <Route path="/contact-us" element={<ContactUs />}></Route>
       {/* Authentication */}
-      <Route path="/sign-in" element={<SignIn />}></Route>
-      <Route path="/sign-up" element={<SignUp />}></Route>
+      <Route path="/login" element={<Login />}></Route>
+      <Route path="/register" element={<Register />}></Route>
       <Route path="/reset-password" element={<ResetPasswordEmail />}></Route>
       <Route
         path="/reset-password-sent"

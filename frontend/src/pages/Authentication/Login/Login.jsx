@@ -7,10 +7,10 @@ import Form from "react-bootstrap/Form";
 // Components
 import AuthenticationModal from "@components/AuthenticationModal/AuthenticationModal";
 // scss
-import "./sign-in.scss";
+import "./login.scss";
 import AuthenticationContainer from "../../../components/AuthenticationContainer/AuthenticationContainer";
 
-function SignIn() {
+function Login() {
   const [details, setDetails] = useState({
     username: "",
     password: "",
@@ -25,7 +25,7 @@ function SignIn() {
     e.preventDefault();
   }
   return (
-    <AuthenticationContainer id="sign-in">
+    <AuthenticationContainer id="login">
       <AuthenticationModal hasShadow={true}>
         <Form onSubmit={handleSubmit}>
           <Form.Group className="mb-3" controlId="username">
@@ -48,14 +48,14 @@ function SignIn() {
             />
           </Form.Group>
           <Button variant="primary" type="submit">
-            Sign in
+            Login
           </Button>
         </Form>
         <div className="forgotten-password">
           <Link to="/reset-password">Forgotten password?</Link>
         </div>
         <hr />
-        <Link id="modal-sign-up" to="/sign-up">
+        <Link id="modal-register" to="/register">
           <Button variant="success">Create a new account</Button>
         </Link>
       </AuthenticationModal>
@@ -63,4 +63,4 @@ function SignIn() {
   );
 }
 
-export default SignIn;
+export default Login;
