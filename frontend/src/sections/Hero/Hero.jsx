@@ -15,7 +15,7 @@ function Hero() {
               interface/experience to help students learn, and teachers teach.
             </p>
             <Link
-              to="sign-up"
+              to="register"
               className="btn btn-primary text-uppercase fw-semibold btn-get-started"
             >
               Get started

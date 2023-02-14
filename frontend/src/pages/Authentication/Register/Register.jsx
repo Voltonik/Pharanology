@@ -147,7 +147,7 @@ function Register() {
           </Button>
         </Form>
         <div className="already-have-an-account">
-          <Link className="text-center" to="/sign-in">
+          <Link className="text-center" to="/login">
             Already have an account?
           </Link>
         </div>
