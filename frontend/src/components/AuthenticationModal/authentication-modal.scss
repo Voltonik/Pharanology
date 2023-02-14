@@ -2,7 +2,10 @@
 @import "@components/Modal/modal.scss";
 @import "@components/Forms/forms.scss";
 .authentication-modal {
-  padding: 2rem 5rem;
+  padding: 2rem 1rem;
+  @include media-breakpoint-up(lg) {
+    padding: 2rem 5rem;
+  }
   top: 0;
   margin-top: 2rem;
   height: fit-content;
