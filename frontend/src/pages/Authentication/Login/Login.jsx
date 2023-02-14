@@ -22,7 +22,7 @@ function Login() {
     });
   }
   function handleSubmit(e) {
-    e.preventDefault();
+    //e.preventDefault();
   }
   return (
     <AuthenticationContainer id="login">
