@@ -24,7 +24,7 @@ class Exam(models.Model):
     scheduled_for = models.DateTimeField()
     for_grade = models.CharField(choices=SchoolGrades.choices, default=SchoolGrades.G01, max_length=3)
     duration = models.DecimalField(default=2, max_digits=5, decimal_places=3)
-    results_date = models.DateTimeField(default = scheduled_for + timedelta(hours=duration))
+    results_date = models.DateTimeField()
     broadcast_results_date = models.BooleanField(default=True)
     
     def __str__(self):
