@@ -25,6 +25,7 @@ def register_request(request):
 
 @unauthenticated_user
 def login_request(request):
+    print(request.POST)
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
