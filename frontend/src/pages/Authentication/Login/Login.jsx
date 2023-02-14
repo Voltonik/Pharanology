@@ -56,7 +56,7 @@ function Login() {
         </div>
         <hr />
         <Link id="modal-register" to="/register">
-          <Button variant="success">Create a new account</Button>
+          <Button variant="secondary">Create a new account</Button>
         </Link>
       </AuthenticationModal>
     </AuthenticationContainer>
