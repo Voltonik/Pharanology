@@ -1,0 +1,11 @@
+@import "@/custom.scss";
+// Variable Reassign here.
+$btn-text-color: white;
+@import "@bootstrap/scss/buttons.scss";
+
+.btn,
+.btn:hover,
+.btn:focus {
+  --bs-btn-active-color: $btn-text-color;
+  color: $btn-text-color;
+}

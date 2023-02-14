@@ -1,0 +1,25 @@
+@import "@/custom.scss";
+@import "@/utils.scss";
+
+#hero {
+  @include gradient;
+  color: #111;
+  .container {
+    display: block;
+    height: 100%;
+    .row {
+      height: 100%;
+      .col-typography {
+        .btn-get-started {
+          width: fit-content;
+        }
+      }
+      .col-typography,
+      .col-img {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+    }
+  }
+}

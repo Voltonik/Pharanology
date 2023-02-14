@@ -19,7 +19,7 @@ Pharanology is an engaging platform for taking exams that eliminates these issue
 11. Make your changes (adding features, fixing issues, etc..)
 12. Commit & Push to the branch (by clicking on commit changes in the third tab in the left panel of vscode)
 
-* Note: if you pull the repository and a weird "column does not exist" error appears, delete your db.sqlite then redo step 8.
+- Note: if you pull the repository and a weird "column does not exist" error appears, delete your db.sqlite then redo step 8.
 
 ## TODO (Backend)
 
@@ -36,17 +36,20 @@ Pharanology is an engaging platform for taking exams that eliminates these issue
 
 ### Components
 
-- [ ] Navbar
+- [x] Navbar
 
 ### Pages
 
 ~- [ ] Error~ (removed for simplicity; using simple Http Responses instead, no fancy designs needed)
 - [ ] Examiner Dashboard
-- [ ] Login
-- [ ] Password reset Done
-- [ ] Password reset form
-- [ ] Password reset sent
-- [ ] Password reset
-- [ ] Register
+- [x] Login
+  - [ ] Add Verification
+- [x] Password reset Done
+- [x] Password reset form
+- [x] Password reset sent
+- [x] Password reset
+  - [ ] Connect to Backend
+- [x] Register
+  - [ ] Add Verification
 - [ ] Student Dashboard
 - [ ] Exam

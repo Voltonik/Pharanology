@@ -1,0 +1,25 @@
+@import "@/custom.scss";
+$navbar-padding-y: 1.25rem;
+@import "@bootstrap/scss/navbar";
+
+.navbar-collapse {
+  flex-grow: none;
+}
+.navbar {
+  background: tint-color($primary, 85%);
+  .navbar-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    .nav-link {
+      text-decoration: none;
+      font-weight: 600;
+      color: $primary;
+      opacity: 0.9;
+      &.active {
+        opacity: 1;
+      }
+    }
+  }
+}

@@ -1,0 +1,8 @@
+@import "@/custom.scss";
+@import "@/utils.scss";
+
+.authentication-container {
+  @include gradient;
+  display: flex;
+  justify-content: center;
+}

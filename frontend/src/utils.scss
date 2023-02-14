@@ -1,0 +1,3 @@
+@mixin gradient {
+  background: linear-gradient(to top, #fff, tint-color($primary, 85%));
+}

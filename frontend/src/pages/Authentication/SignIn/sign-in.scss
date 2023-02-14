@@ -1,0 +1,23 @@
+@import "@/custom.scss";
+@import "@/utils.scss";
+
+#sign-in {
+  .authentication-modal {
+    #modal-sign-up {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-decoration: none;
+    }
+    .forgotten-password {
+      display: block;
+      text-align: center;
+      a {
+        text-decoration: none;
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
+}

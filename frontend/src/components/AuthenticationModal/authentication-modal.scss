@@ -1,0 +1,16 @@
+@use "@/custom.scss";
+@import "@components/Modal/modal.scss";
+@import "@components/Forms/forms.scss";
+.authentication-modal {
+  padding: 2rem 5rem;
+  top: 0;
+  margin-top: 2rem;
+  height: fit-content;
+  width: 95%;
+  @include media-breakpoint-up(lg) {
+    width: 60%;
+  }
+  button[type="submit"] {
+    width: 100%;
+  }
+}
