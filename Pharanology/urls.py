@@ -20,8 +20,8 @@ from django.views.generic import TemplateView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path("", include("accounts.urls")),
-    path("", include("exams.urls")),
+    path("api/auth/", include("accounts.urls")),
+    path("api/exams/", include("exams.urls")),
     re_path(
         r"^.*$",
         TemplateView.as_view(template_name="base.html"),
