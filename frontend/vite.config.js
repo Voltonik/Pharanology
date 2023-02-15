@@ -12,6 +12,7 @@ export default defineConfig({
       "@pages": path.resolve(__dirname, "./src/pages"),
       "@components": path.resolve(__dirname, "./src/components"),
       "@sections": path.resolve(__dirname, "./src/sections"),
+      "@context": path.resolve(__dirname, "./src/context"),
       "@bootstrap": path.resolve(__dirname, "./node_modules/bootstrap"),
     },
   },
