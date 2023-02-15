@@ -1,22 +1,33 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 // react-router-dom
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 // react-bootstrap
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+// Context
+import { useAuthentication } from "@context/AuthenticationContext";
 // Components
 import AuthenticationModal from "@components/AuthenticationModal/AuthenticationModal";
+import AuthenticationContainer from "@components/AuthenticationContainer/AuthenticationContainer";
 // api
 import api, { getCookie } from "@/api";
 // scss
 import "./login.scss";
-import AuthenticationContainer from "../../../components/AuthenticationContainer/AuthenticationContainer";
 
 function Login() {
+  const navigate = useNavigate();
+  const { isLoggedIn, setIsLoggedIn } = useAuthentication();
+  const [message, setMessage] = useState({ content: "", className: "" });
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
   const [details, setDetails] = useState({
     username: "",
     password: "",
   });
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate("/");
+    }
+  }, [isLoggedIn]);
   function handleChange(e) {
     const { name, value } = e.target;
     setDetails((prev) => {
@@ -26,18 +37,31 @@ function Login() {
   function handleSubmit(e) {
     e.preventDefault();
     const csrftoken = getCookie("csrftoken");
-    const { username, password } = details;
-    api.post(
-      "login/",
-      { username, password },
-      {
+    setIsLoggingIn(true);
+    api
+      .post("/api/auth/login/", details, {
         headers: {
           Accept: "application/json",
           "Content-Type": "application/json",
           "X-CSRFToken": csrftoken,
         },
-      }
-    );
+      })
+      .then((response) => {
+        setIsLoggingIn(false);
+        setMessage({
+          content: "Logged in successfully, Redirecting to dashboard",
+          className: "text-success",
+        });
+        setIsLoggedIn(true);
+        navigate("/");
+      })
+      .catch((error) => {
+        setIsLoggingIn(false);
+        setMessage({
+          content: error.response.data.non_field_errors[0],
+          className: "text-danger",
+        });
+      });
   }
   return (
     <AuthenticationContainer id="login">
@@ -54,7 +78,7 @@ function Login() {
             />
           </Form.Group>
 
-          <Form.Group className="mb-3" controlId="password">
+          <Form.Group className="mb-1" controlId="password">
             <Form.Label>Password</Form.Label>
             <Form.Control
               type="password"
@@ -64,8 +88,13 @@ function Login() {
               onChange={handleChange}
             />
           </Form.Group>
-          <Button variant="primary" type="submit">
-            Login
+          {message.content && (
+            <h6 className={`text-center ${message.className}`}>
+              {message.content}
+            </h6>
+          )}
+          <Button disabled={isLoggingIn} variant="primary" type="submit">
+            {isLoggingIn ? "Logging In..." : "Login"}
           </Button>
         </Form>
         <div className="forgotten-password">

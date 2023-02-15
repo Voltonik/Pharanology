@@ -1,6 +1,8 @@
 import React from "react";
 
 import { BrowserRouter } from "react-router-dom";
+// Context
+import { AuthenticationProvider } from "@context/AuthenticationContext.jsx";
 // Components
 import Navbar from "@components/Navbar/Navbar";
 // Pages
@@ -11,8 +13,10 @@ import "./App.scss";
 function App() {
   return (
     <BrowserRouter>
-      <Navbar />
-      <Pages />
+      <AuthenticationProvider>
+        <Navbar />
+        <Pages />
+      </AuthenticationProvider>
     </BrowserRouter>
   );
 }
