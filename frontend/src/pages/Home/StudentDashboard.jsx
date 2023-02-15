@@ -124,7 +124,7 @@ function ExamCard({ img, examName, examDate, link, splideType }) {
         <Card.Title>{examName}</Card.Title>
         <Card.Subtitle className="text-muted">{examDate}</Card.Subtitle>
         {link && (
-          <Link to={link.link} className="btn btn-primary ">
+          <Link to={link} className="btn btn-primary ">
             {splideType === SPLIDE_TYPES.AVAILABLE
               ? "Get Started"
               : "See Results"}
