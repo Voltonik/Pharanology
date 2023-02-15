@@ -1,8 +1,5 @@
 import { Route, Routes } from "react-router-dom";
 import Home from "./Home/Home";
-import ContactUs from "./ContactUs/ContactUs";
-import Dashboard from "./Dashboard/Dashboard";
-import Exams from "./Exams/Exams";
 import Login from "./Authentication/Login/Login";
 import Register from "./Authentication/Register/Register";
 import ResetPasswordEmail from "./Authentication/ResetPassword/ResetPasswordEmail";
@@ -15,9 +12,6 @@ function Pages() {
   return (
     <Routes>
       <Route path="/" element={<Home />}></Route>
-      <Route path="/dashboard" element={<Dashboard />}></Route>
-      <Route path="/exams" element={<Exams />}></Route>
-      <Route path="/contact-us" element={<ContactUs />}></Route>
       {/* Authentication */}
       <Route path="/login" element={<Login />}></Route>
       <Route path="/register" element={<Register />}></Route>
