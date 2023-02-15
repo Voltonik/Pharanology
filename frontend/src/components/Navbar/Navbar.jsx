@@ -18,16 +18,6 @@ function Navbar() {
             <NavLink className="nav-link" to="/">
               Home
             </NavLink>
-            <NavLink className="nav-link" to="/dashboard">
-              Dashboard
-            </NavLink>
-            <NavLink className="nav-link" to="/exams">
-              Exams
-            </NavLink>
-            {/* <NavLink to="/">Exams</NavLink> */}
-            <NavLink className="nav-link" to="/contact-us">
-              Contact us
-            </NavLink>
 
             <NavLink className="nav-link" to="login">
               Login
