@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="https://lh3.googleusercontent.com/u/0/drive-viewer/AAOQEORj8mSo98CwhsTOOs7UGFtYbn_14FH-G3CFJ2-z3d1yk0WulVMU5QQmigqP5Qrb4mKXH-cI4PVHudTAIcQ2nVGmYPNUdQ=w1366-h625" width="350">
+</p>
+
 # Pharanology
 
 In today’s age paper exams are redundant as they are often very problematic; They could be leaked, cheating is trivial and human error is always there.
