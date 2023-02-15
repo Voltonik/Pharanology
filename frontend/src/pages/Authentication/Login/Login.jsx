@@ -27,7 +27,7 @@ function Login() {
   return (
     <AuthenticationContainer id="login">
       <AuthenticationModal hasShadow={true}>
-        <Form onSubmit={handleSubmit}>
+        <Form method="POST" onSubmit={handleSubmit}>
           <Form.Group className="mb-3" controlId="username">
             <Form.Label>Username</Form.Label>
             <Form.Control
