@@ -6,6 +6,8 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 // Components
 import AuthenticationModal from "@components/AuthenticationModal/AuthenticationModal";
+// api
+import api from "@/api";
 // scss
 import "./login.scss";
 import AuthenticationContainer from "../../../components/AuthenticationContainer/AuthenticationContainer";
@@ -22,7 +24,9 @@ function Login() {
     });
   }
   function handleSubmit(e) {
-    //e.preventDefault();
+    e.preventDefault();
+    const { username, password } = details;
+    api.post("login/", { username, password });
   }
   return (
     <AuthenticationContainer id="login">
@@ -34,6 +38,7 @@ function Login() {
               type="text"
               placeholder="Enter username"
               name="username"
+              required
               onChange={handleChange}
             />
           </Form.Group>
@@ -44,6 +49,7 @@ function Login() {
               type="password"
               placeholder="Password"
               name="password"
+              required
               onChange={handleChange}
             />
           </Form.Group>

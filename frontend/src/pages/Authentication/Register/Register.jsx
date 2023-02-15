@@ -28,32 +28,11 @@ function Register() {
   }
   function handleSubmit(e) {
     e.preventDefault();
-    const {
-      firstName,
-      lastName,
-      username,
-      email,
-      password,
-      confirmPassword,
-      grade,
-    } = details;
+    const { grade } = details;
 
-    if (firstName.length === 0) {
-      return;
-    }
-    if (lastName.length === 0) {
-      return;
-    }
-    if (!email.includes("@")) {
-      return;
-    }
-    if (password !== confirmPassword) {
-      return;
-    }
     if (!grade.includes("G")) {
       return;
     }
-    console.log(details);
   }
   return (
     <AuthenticationContainer id="register">
@@ -68,6 +47,7 @@ function Register() {
                   placeholder="Enter First Name"
                   name="firstName"
                   onChange={handleChange}
+                  required
                 />
               </Form.Group>
             </div>
@@ -79,6 +59,7 @@ function Register() {
                   placeholder="Enter Last Name"
                   name="lastName"
                   onChange={handleChange}
+                  required
                 />
               </Form.Group>
             </div>
@@ -90,6 +71,7 @@ function Register() {
               placeholder="Enter Username"
               name="username"
               onChange={handleChange}
+              required
             />
           </Form.Group>
           <Form.Group className="mb-1" controlId="email">
@@ -99,6 +81,7 @@ function Register() {
               placeholder="Enter Email"
               name="email"
               onChange={handleChange}
+              required
             />
           </Form.Group>
 
@@ -109,6 +92,7 @@ function Register() {
               placeholder="Password"
               name="password"
               onChange={handleChange}
+              required
             />
           </Form.Group>
           <Form.Group className="mb-1" controlId="confirmPassword">
@@ -118,6 +102,7 @@ function Register() {
               placeholder="Confirm Password"
               name="confirmPassword"
               onChange={handleChange}
+              required
             />
           </Form.Group>
           <Form.Group className="mb-3" controlId="grade">
