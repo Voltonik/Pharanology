@@ -1,0 +1,8 @@
+@import "@/custom.scss";
+.exam-splide {
+  $padding-y: 2rem;
+  $padding-x: 1rem;
+  padding: $padding-y $padding-x;
+  border-radius: 1rem;
+  background-color: tint-color($primary, 75%);
+}
