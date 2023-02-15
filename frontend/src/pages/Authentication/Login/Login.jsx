@@ -7,7 +7,7 @@ import Form from "react-bootstrap/Form";
 // Components
 import AuthenticationModal from "@components/AuthenticationModal/AuthenticationModal";
 // api
-import api from "@/api";
+import api, { getCookie } from "@/api";
 // scss
 import "./login.scss";
 import AuthenticationContainer from "../../../components/AuthenticationContainer/AuthenticationContainer";
@@ -25,8 +25,19 @@ function Login() {
   }
   function handleSubmit(e) {
     e.preventDefault();
+    const csrftoken = getCookie("csrftoken");
     const { username, password } = details;
-    api.post("login/", { username, password });
+    api.post(
+      "login/",
+      { username, password },
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "X-CSRFToken": csrftoken,
+        },
+      }
+    );
   }
   return (
     <AuthenticationContainer id="login">
