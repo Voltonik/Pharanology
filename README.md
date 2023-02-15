@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="https://lh3.googleusercontent.com/u/0/drive-viewer/AAOQEORj8mSo98CwhsTOOs7UGFtYbn_14FH-G3CFJ2-z3d1yk0WulVMU5QQmigqP5Qrb4mKXH-cI4PVHudTAIcQ2nVGmYPNUdQ=w1366-h625" width="350">
+</p>
+
 # Pharanology
 
 In today’s age paper exams are redundant as they are often very problematic; They could be leaked, cheating is trivial and human error is always there.
@@ -29,6 +33,7 @@ Pharanology is an engaging platform for taking exams that eliminates these issue
 - [x] Pushing exams
 - [x] Exam architecture: Solving
 - [ ] Exam architecture: Grading
+- [ ] Connect to frontend: REST Framework
 - [ ] Admin dashboard: Making exams and pushing them to students
 - [ ] Student dashboard: Show past exams, grades  (maybe?)
 
@@ -40,7 +45,7 @@ Pharanology is an engaging platform for taking exams that eliminates these issue
 
 ### Pages
 
-~- [ ] Error~ (removed for simplicity; using simple Http Responses instead, no fancy designs needed)
+- [x] Error
 - [ ] Examiner Dashboard
 - [x] Login
 - [ ] Add Verification
