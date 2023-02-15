@@ -3,7 +3,17 @@
 
 #student-dashboard {
   @include gradient;
-  //   .container {
-
-  //   }
+  .container {
+    .row {
+      margin-bottom: 3rem;
+      .welcoming-user {
+        span {
+          h2 {
+            margin-bottom: 0rem;
+          }
+        }
+        margin-bottom: 2rem;
+      }
+    }
+  }
 }
