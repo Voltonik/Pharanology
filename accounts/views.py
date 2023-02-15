@@ -10,7 +10,7 @@ from .decorators import *
 @api_view(['GET', 'POST'])
 def register_request(request):
     if request.method != "POST":
-        return Response(None)
+        return Response({"is_authenticated": request.user.is_authenticated()})
     
     serializer = StudentUserSerializer(data = request.data)
     
@@ -20,7 +20,7 @@ def register_request(request):
         user = authenticate(username=serializer.validated_data['username'], password=serializer.validated_data['password1'])
         login(request, user)
     
-        return Response(None)
+        return Response(serializer.data)
     
     return Response(serializer._errors)
 
@@ -28,7 +28,7 @@ def register_request(request):
 @api_view(['GET', 'POST'])
 def login_request(request):
     if request.method != "POST":
-        return Response(None)
+        return Response({"is_authenticated": request.user.is_authenticated})
     
     serializer = LoginSerializer(data = request.data, context={ 'request': request })
     
@@ -36,7 +36,7 @@ def login_request(request):
         user = serializer.validated_data['user']
         login(request, user)
         
-        return Response(None)
+        return Response(serializer.data)
     return Response(serializer._errors)
 
 
