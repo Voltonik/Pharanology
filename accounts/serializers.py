@@ -1,9 +1,35 @@
 from rest_framework import serializers
-from rest_framework.validators import UniqueValidator, ValidationError
+from rest_framework.validators import UniqueValidator
 from django.contrib.auth.password_validation import validate_password
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate
 
 from .models import *
+from exams.serializers import ExamSerializer
+
+class StudentSerializer(serializers.ModelSerializer):
+    available_exams = ExamSerializer(many = True)
+    upcoming_exams = ExamSerializer(many = True)
+    
+    exams_history = serializers.JSONField()
+    
+    class Meta:
+        model = StudentUser
+        fields = ("id",
+                  "available_exams",
+                  "upcoming_exams",
+                  "exams_history",
+                  "last_login",
+                  "role",
+                  "username",
+                  "first_name",
+                  "last_name",
+                  "email",
+                  "grade")
+        
+    def validate_exams_history(self, exams_history):
+        exams_history = {k: v for k, v in exams_history.items() if v["show"] == True}
+        
+        return exams_history
 
 class LoginSerializer(serializers.Serializer):
     username = serializers.CharField(required=True)
@@ -17,9 +43,9 @@ class LoginSerializer(serializers.Serializer):
             user = authenticate(request=self.context.get('request'),
                                 username=username, password=password)
             if not user:
-                raise serializers.ValidationError('Access denied: wrong username or password.', code='authorization')
+                raise serializers.ValidationError('Wrong username or password.')
         else:
-            raise serializers.ValidationError('Both "username" and "password" are required.', code='authorization')
+            raise serializers.ValidationError('Both "username" and "password" are required.')
 
         data['user'] = user
         return data
@@ -42,19 +68,19 @@ class RegisterSerializer(serializers.Serializer):
         last_name = data.get('last_name')
         
         if len(username) < 3 or len(username) > 15:
-            raise ValidationError('Username must be between 3 and 15 characters long')
+            raise serializers.ValidationError('Username must be between 3 and 15 characters long.')
         
         if len(first_name) < 2 or len(first_name) > 24:
-            raise ValidationError('First name must be between 2 and 24 characters long')
+            raise serializers.ValidationError('First name must be between 2 and 24 characters long.')
         
         if len(last_name) < 2 or len(last_name) > 24:
-            raise ValidationError('Last name must be between 2 and 24 characters long')
+            raise serializers.ValidationError('Last name must be between 2 and 24 characters long.')
         
         errors = validate_password(password1)
         if errors != None:
-            raise ValidationError(errors)
+            raise serializers.ValidationError(errors)
         
         if password1 != password2:
-            raise serializers.ValidationError("The two password fields didn't match")
+            raise serializers.ValidationError("The two password fields didn't match.")
         
         return data

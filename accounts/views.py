@@ -14,7 +14,7 @@ def register_request(request):
     
     serializer = RegisterSerializer(data = request.data)
     
-    if serializer.is_valid():
+    if serializer.is_valid(raise_exception=True):
         StudentUser.objects.create_user(
             username=serializer.validated_data['username'],
             first_name=serializer.validated_data['first_name'],
@@ -55,12 +55,11 @@ def logout_request(request):
 
 @api_view(['GET'])
 def student_dashboard_request(request):
-    student = StudentUser.objects.get(email = request.user.email)
+    serializer = StudentSerializer(StudentUser.objects.get(username = request.user.username), data=request.data)
     
-    exams_history = {k: v for k, v in student.exams_history.items() if v["show"] == True}
-    print(exams_history)
+    print(serializer.is_valid())
     
-    return Response({"upcoming_exams": student.upcoming_exams, "available_exams": student.available_exams, "exams_history": exams_history})
+    return Response(serializer.errors)
 
 
 @api_view(['GET'])

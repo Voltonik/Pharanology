@@ -7,20 +7,17 @@ from datetime import timedelta
 
 from .models import Exam, Question, ExamState
 from accounts.models import StudentUser
-from accounts.templatetags.exam_tags import hash_exam
 
 logger = get_task_logger(__name__)
 
 @shared_task
 def broadcast_exam_results(exam_instance_pk):
     exam_instance = Exam.objects.get(pk = exam_instance_pk)
-    
-    exam_hashed_name = hash_exam(exam_instance)
-    
-    target_students = StudentUser.objects.filter(exams_history__has_key = hash_exam(exam_hashed_name))
+        
+    target_students = StudentUser.objects.filter(exams_history__has_key = exam_instance_pk)
     
     for student in target_students:
-        student.exams_history[exam_hashed_name]["show"] = True
+        student.exams_history[exam_instance_pk]["show"] = True
 
         student.save(update_fields=['exams_history'])     
     
@@ -33,7 +30,11 @@ def end_exam(exam_instance_pk):
     exam_instance.state = ExamState.AwaitingResults
     
     # close exam on students still in it
+    target_students = StudentUser.objects.filter(grade = exam_instance.for_grade).exclude(exam_history__has_key=exam_instance_pk)
     
+    # force post
+    
+    # frontend: redirect
     
     broadcast_exam_results.apply_async((exam_instance_pk,), eta = exam_instance.results_date)
 
@@ -74,4 +75,4 @@ def push_exam(exam_instance_pk):
         student.available_exams.add(exam_instance)
         student.upcoming_exams.remove(exam_instance)
         
-    end_exam.apply_async((exam_instance_pk,), eta = end_time)
+    #end_exam.apply_async((exam_instance_pk,), eta = end_time)

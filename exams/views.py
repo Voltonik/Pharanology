@@ -1,20 +1,17 @@
-from django.shortcuts import render, redirect
-from django.contrib.auth.decorators import login_required
-from django.http import HttpResponse
+from rest_framework.response import Response
+from rest_framework.decorators import api_view
 
 from accounts.models import StudentUser
 from accounts.enums import AccountRoles
-from accounts.templatetags.exam_tags import hash_exam
 
 from .models import *
 from datetime import datetime
 
-def get_exam_data(request, exam_hashed_name):
+def get_exam_data(request, exam_pk):
 	if request.user.role != AccountRoles.STUDENT:
 		return (None, None, None, "You are not a student.")
 	
-	# TODO Maybe just use pk if no risk of people knowing pks cuz faster? im using hashed names instead so people don't know pk just in case. idk lol.
-	exams = [e for e in Exam.objects.all() if hash_exam(e) == exam_hashed_name]
+	exams = Exam.objects.get(pk = exam_pk)
 	
 	if len(exams) == 0:
 		return (None, None, None, "Exam not found.")
@@ -27,23 +24,22 @@ def get_exam_data(request, exam_hashed_name):
 	
 	return (exam_instance, questions, student, None)
 
-@login_required
-def begin_exam(request, exam_hashed_name):
-	(exam_instance, questions, student, error) = get_exam_data(request, exam_hashed_name)	
+def begin_exam(request, exam_pk):
+	(exam_instance, questions, student, error) = get_exam_data(request, exam_pk)	
 	
-	if exam_hashed_name in student.exams_history:
+	if exam_pk in student.exams_history:
 		error = "You have already done that exam"
 		
 	if exam_instance not in student.available_exams.all():
 		error = "Exam is not available for you."
 	
 	if error != None:
-		return HttpResponse(error)
+		return Response(error)
 	
 	if request.method == 'POST':
 		(marks, max_marks, corrections, chosen) = exam_instance.grade(request.POST, questions)
 		
-		student.exams_history[exam_hashed_name] = {
+		student.exams_history[exam_pk] = {
 			"exam_name": exam_instance.__str__(),
 			"marks": marks,
 			"corrections": corrections,
@@ -56,23 +52,22 @@ def begin_exam(request, exam_hashed_name):
 		
 		student.available_exams.remove(exam_instance)
 		
-		return redirect('/')
+		return Response(None)
 	
-	return render(request, 'exam.html', {"questions": questions})
+	return Response(None)
 
-@login_required
-def results(request, exam_hashed_name):
-	(exam_instance, questions, student, error) = get_exam_data(request, exam_hashed_name)
+def results(request, exam_pk):
+	(exam_instance, questions, student, error) = get_exam_data(request, exam_pk)
 	
 	if error != None:
-		return HttpResponse(error)
+		return Response(error)
 	
 	if exam_instance.results_date < datetime.now():
-		return HttpResponse("Exam results are not ready" if not exam_instance.broadcast_results_date else f"Exam results will be ready on {exam_instance.results_date}")
+		return Response("Exam results are not ready" if not exam_instance.broadcast_results_date else f"Exam results will be ready on {exam_instance.results_date}")
 	
-	student_exam_data = student.exams_history.get(exam_hashed_name, None)
+	student_exam_data = student.exams_history.get(exam_pk, None)
 	
 	if student_exam_data == None:
-		return HttpResponse("You haven't done that exam yet")
+		return Response("You haven't done that exam yet")
 			
-	return render(request, "results.html", {"questions":questions, "student_exam_data":student_exam_data})
+	return Response({"questions":questions, "student_exam_data":student_exam_data})

@@ -4,9 +4,9 @@ import hashlib
 
 register = template.Library()
 
-@register.filter(name='hash')
-def hash_exam(value):
-    return str(int(hashlib.sha1(str(value).encode("utf-8")).hexdigest(), 16) % (10 ** 8))
+# @register.filter(name='hash')
+# def hash_exam(value):
+#     return str(int(hashlib.sha1(str(value).encode("utf-8")).hexdigest(), 16) % (10 ** 8))
 
 @register.filter(name='addstr')
 def addstr(arg1, arg2):
