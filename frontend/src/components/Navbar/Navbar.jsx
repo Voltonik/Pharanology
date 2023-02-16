@@ -44,7 +44,7 @@ function Navbar() {
         <BootstrapNavbar.Collapse id="navbar-nav">
           <Nav>
             <NavLink className="nav-link" to="/">
-              Home
+              {isLoggedIn ? "Dashboard" : "Home"}
             </NavLink>
 
             {isLoggedIn ? (
