@@ -7,11 +7,13 @@ import ResetPasswordSent from "./Authentication/ResetPassword/ResetPasswordSent"
 import ResetPasswordComplete from "./Authentication/ResetPassword/ResetPasswordComplete";
 import ResetPasswordResetForm from "./Authentication/ResetPassword/ResetPasswordResetForm";
 import Error from "./Error/Error";
+import Exam from "./Exam/Exam";
 
 function Pages() {
   return (
     <Routes>
       <Route path="/" element={<Home />}></Route>
+      <Route path="/exam/:examId" element={<Exam />} />
       {/* Authentication */}
       <Route path="/login" element={<Login />}></Route>
       <Route path="/register" element={<Register />}></Route>
