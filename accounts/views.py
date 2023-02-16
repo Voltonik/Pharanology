@@ -5,6 +5,7 @@ from rest_framework.decorators import api_view
 
 from .serializers import *
 from .models import StudentUser
+from .decorators import authorized_view
 
 @api_view(['GET'])
 def user_data_request(request):
@@ -47,12 +48,14 @@ def login_request(request):
 
 
 @api_view(['POST'])
+@authorized_view
 def logout_request(request):
     logout(request)
     return Response(None)
 
 
 @api_view(['GET'])
+@authorized_view
 def student_dashboard_request(request):
     serializer = get_user_serializer(request.user)
     
@@ -60,5 +63,6 @@ def student_dashboard_request(request):
 
 
 @api_view(['GET'])
+@authorized_view
 def examiner_dashboard_request(request):
     return Response(None)
