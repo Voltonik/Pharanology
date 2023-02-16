@@ -4,7 +4,21 @@ from django.contrib.auth.password_validation import validate_password
 from django.contrib.auth import authenticate
 
 from .models import *
+from .enums import AccountRoles
 from exams.serializers import ExamSerializer
+
+def get_user_serializer(user):
+    if user.role == AccountRoles.STUDENT:
+        return StudentSerializer(StudentUser.objects.get(username = user.username))
+    elif user.role == AccountRoles.EXAMINER:
+        return ExaminerSerializer(ExaminerUser.objects.get(username = user.username))
+    elif user.role == AccountRoles.ADMIN:
+        return AdminSerializer(BaseUser.objects.get(username = user.username))
+  
+class AdminSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BaseUser
+        fields = "__all__"      
 
 class StudentSerializer(serializers.ModelSerializer):
     available_exams = ExamSerializer(many = True)
@@ -26,10 +40,17 @@ class StudentSerializer(serializers.ModelSerializer):
                   "email",
                   "grade")
         
-    def get_data(self):
-        self.data['exams_history'] = {k: v for k, v in self.data['exams_history'].items() if v["show"] == True}
+    @property
+    def data(self):
+        _data = super().data
+        _data['exams_history'] = {k: v for k, v in _data['exams_history'].items() if v["show"] == True}
         
-        return self.data
+        return _data
+
+class ExaminerSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ExaminerUser
+        fields = "__all__" 
 
 class LoginSerializer(serializers.Serializer):
     username = serializers.CharField(required=True)
