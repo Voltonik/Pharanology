@@ -35,7 +35,9 @@ def register_request(request):
 @api_view(['GET', 'POST'])
 def login_request(request):
     if request.method != "POST":
-        return Response({"is_authenticated": request.user.is_authenticated})
+        serializer = StudentSerializer(StudentUser.objects.get(username = request.user.username))
+        
+        return Response({"is_authenticated": request.user.is_authenticated} | serializer.get_data())
     
     serializer = LoginSerializer(data = request.data, context={ 'request': request })
     
@@ -55,11 +57,9 @@ def logout_request(request):
 
 @api_view(['GET'])
 def student_dashboard_request(request):
-    serializer = StudentSerializer(StudentUser.objects.get(username = request.user.username), data=request.data)
+    serializer = StudentSerializer(StudentUser.objects.get(username = request.user.username))
     
-    print(serializer.is_valid())
-    
-    return Response(serializer.errors)
+    return Response(serializer.get_data())
 
 
 @api_view(['GET'])

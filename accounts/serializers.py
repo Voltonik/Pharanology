@@ -26,10 +26,10 @@ class StudentSerializer(serializers.ModelSerializer):
                   "email",
                   "grade")
         
-    def validate_exams_history(self, exams_history):
-        exams_history = {k: v for k, v in exams_history.items() if v["show"] == True}
+    def get_data(self):
+        self.data['exams_history'] = {k: v for k, v in self.data['exams_history'].items() if v["show"] == True}
         
-        return exams_history
+        return self.data
 
 class LoginSerializer(serializers.Serializer):
     username = serializers.CharField(required=True)
