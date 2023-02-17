@@ -1,16 +1,33 @@
 import React from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import "./exam.scss";
 import { Form, Button } from "react-bootstrap";
 import ExamNavbar from "@components/Navbar/ExamNavbar/ExamNavbar";
+import DashboardNavbar from "@components/Navbar/DashboardNavbar/DashboardNavbar";
+import Error from "../Error/Error";
+// Context
+import { useAuthentication } from "@context/AuthenticationContext";
 const QUESTION_TYPES = {
   MCQ: "MCQ",
   TrueOrFalse: "TrueOrFalse",
 };
 function Exam({}) {
   const { examId } = useParams();
+  const { userData } = useAuthentication();
   function handleSubmit(e) {
     e.preventDefault();
+  }
+  if (!userData || !userData.is_authenticated) {
+    return (
+      <>
+        <DashboardNavbar />
+        <Error message="You haven't logged in yet!" code={401}>
+          <Link className="btn btn-primary" to="/login">
+            Go to login page
+          </Link>
+        </Error>
+      </>
+    );
   }
   return (
     <div id="exam">
