@@ -1,10 +1,11 @@
-export function navbarRect() {
+export function navbarRectHeight() {
   let navbar = document.querySelector("#navbar");
-  return navbar.getBoundingClientRect();
+  if (!navbar) return 0;
+  return navbar.getBoundingClientRect().height;
 }
 
 export function sectionHeight100vh(section) {
-  let navRect = navbarRect();
-  section.style.minHeight = `calc(100vh - ${navRect.height}px)`;
-  return `calc(100vh - ${navRect.height}px)`;
+  let height = navbarRectHeight();
+  section.style.minHeight = `calc(100vh - ${height}px)`;
+  return `calc(100vh - ${height}px)`;
 }
