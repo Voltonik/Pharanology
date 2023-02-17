@@ -7,21 +7,20 @@ export function useAuthentication() {
 }
 
 export function AuthenticationProvider({ children }) {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-
+  const [userData, setUserData] = useState(null);
   useEffect(() => {
     api
       .get("/api/auth/get_user_data/")
       .then((response) => {
-        setIsLoggedIn(true);
+        setUserData(response.data);
       })
       .catch((error) => {
-        setIsLoggedIn(false);
+        setUserData(null);
       });
   }, []);
 
   return (
-    <AuthenticationContext.Provider value={{ isLoggedIn, setIsLoggedIn }}>
+    <AuthenticationContext.Provider value={{ userData, setUserData }}>
       {children}
     </AuthenticationContext.Provider>
   );

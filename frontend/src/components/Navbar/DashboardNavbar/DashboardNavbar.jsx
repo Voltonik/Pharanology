@@ -1,20 +1,18 @@
-import React, { useEffect } from "react";
+import React from "react";
 // Components
 import Navbar from "@components/Navbar/Navbar";
+import NavDropdown from "react-bootstrap/NavDropdown";
 // api
 import api, { getCookie } from "@/api.js";
 // react-router-dom
 import { NavLink } from "react-router-dom";
 // context
 import { useAuthentication } from "@/context/AuthenticationContext";
+// scss
+import "./dashboard-navbar.scss";
 
 function DashboardNavbar() {
-  const { isLoggedIn, setIsLoggedIn } = useAuthentication();
-  useEffect(() => {
-    api.get("/api/auth/login/").then((response) => {
-      setIsLoggedIn(response.data.is_authenticated);
-    });
-  }, []);
+  const { userData, setUserData } = useAuthentication();
   function logout() {
     const csrftoken = getCookie("csrftoken");
     api
@@ -30,20 +28,20 @@ function DashboardNavbar() {
         }
       )
       .then(() => {
-        setIsLoggedIn(false);
+        setUserData(null);
       });
   }
   return (
     <Navbar>
       <NavLink className="nav-link" to="/">
-        {isLoggedIn ? "Dashboard" : "Home"}
+        {userData && userData.is_authenticated ? "Dashboard" : "Home"}
       </NavLink>
 
-      {isLoggedIn ? (
+      {userData && userData.is_authenticated ? (
         <>
-          <button className="btn nav-link" onClick={logout}>
-            Logout
-          </button>
+          <NavDropdown title={userData.username} id="user-dropdown">
+            <NavDropdown.Item onClick={logout}>Logout</NavDropdown.Item>
+          </NavDropdown>
         </>
       ) : (
         <>

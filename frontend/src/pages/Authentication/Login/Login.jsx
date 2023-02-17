@@ -16,7 +16,7 @@ import "./login.scss";
 
 function Login() {
   const navigate = useNavigate();
-  const { isLoggedIn, setIsLoggedIn } = useAuthentication();
+  const { userData, setUserData } = useAuthentication();
   const [message, setMessage] = useState({ content: "", className: "" });
   const [isLoggingIn, setIsLoggingIn] = useState(false);
   const [details, setDetails] = useState({
@@ -24,10 +24,10 @@ function Login() {
     password: "",
   });
   useEffect(() => {
-    if (isLoggedIn) {
+    if (userData && userData.is_authenticated) {
       navigate("/");
     }
-  }, [isLoggedIn]);
+  }, [userData]);
   function handleChange(e) {
     const { name, value } = e.target;
     setDetails((prev) => {
@@ -48,11 +48,14 @@ function Login() {
       })
       .then((response) => {
         setIsLoggingIn(false);
+        setUserData({
+          ...response.data,
+          is_authenticated: true,
+        });
         setMessage({
           content: "Logged in successfully, Redirecting to dashboard",
           className: "text-success",
         });
-        setIsLoggedIn(true);
         navigate("/");
       })
       .catch((error) => {
