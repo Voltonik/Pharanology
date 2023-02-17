@@ -10,9 +10,14 @@ export function AuthenticationProvider({ children }) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
-    api.get("/api/auth/login/").then((response) => {
-      console.log(response);
-    });
+    api
+      .get("/api/auth/get_user_data/")
+      .then((response) => {
+        setIsLoggedIn(true);
+      })
+      .catch((error) => {
+        setIsLoggedIn(false);
+      });
   }, []);
 
   return (
