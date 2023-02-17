@@ -10,7 +10,7 @@ import { useAuthentication } from "@/context/AuthenticationContext";
 // scss
 import "./exam-navbar.scss";
 
-function ExamNavbar({ questions, examName, examId, progressBar }) {
+function ExamNavbar({ questions, examName, progressBar }) {
   return (
     <Navbar
       className="position-sticky top-0"
@@ -20,7 +20,6 @@ function ExamNavbar({ questions, examName, examId, progressBar }) {
       brandName={
         <div className="d-flex justify-content-center flex-column">
           <h5>{examName}</h5>
-          <span>ID: {examId}</span>
         </div>
       }
     >

@@ -33,7 +33,6 @@ function Exam({}) {
     <div id="exam">
       <ExamNavbar
         examName="Physics Test"
-        examId={examId}
         progressBar={{ now: 50 }}
         questions={[
           { number: 1, prompt: "1+1=?" },
