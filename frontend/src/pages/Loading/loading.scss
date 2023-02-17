@@ -1,0 +1,10 @@
+@import "@/custom";
+@import "@bootstrap/scss/spinners";
+.loading {
+  .spinner-border {
+    $dimensions: 4rem;
+    width: $dimensions;
+    height: $dimensions;
+    margin-right: 0.5rem;
+  }
+}
