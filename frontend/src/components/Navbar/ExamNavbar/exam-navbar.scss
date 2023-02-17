@@ -7,6 +7,7 @@
   text-decoration: none;
   font-size: 1.25rem;
   color: #111;
+  border-bottom: 2px solid tint-color($primary, 80%);
   &:hover {
     background-color: tint-color($primary, 80%);
   }
