@@ -44,14 +44,14 @@ function DashboardNavbar() {
           </NavDropdown>
         </>
       ) : (
-        <>
+        <div className="authentication-links">
           <NavLink className="nav-link" to="login">
             Login
           </NavLink>
           <NavLink className="nav-link" to="register">
             Register
           </NavLink>
-        </>
+        </div>
       )}
     </Navbar>
   );

@@ -5,8 +5,6 @@ import Nav from "react-bootstrap/Nav";
 import BootstrapNavbar from "react-bootstrap/Navbar";
 import ProgressBar from "react-bootstrap/ProgressBar";
 import Offcanvas from "react-bootstrap/Offcanvas";
-// scss
-import "./navbar.scss";
 
 const EXPAND = "lg";
 
