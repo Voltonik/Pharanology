@@ -8,9 +8,13 @@ import ResetPasswordComplete from "./Authentication/ResetPassword/ResetPasswordC
 import ResetPasswordResetForm from "./Authentication/ResetPassword/ResetPasswordResetForm";
 import Error from "./Error/Error";
 import Exam from "./Exam/Exam";
+import Loading from "./Loading/Loading";
 import DashboardSharedLayout from "./SharedLayouts/DashboardSharedLayout";
+import { useAuthentication } from "@context/AuthenticationContext";
 
 function Pages() {
+  const { loading } = useAuthentication();
+  if (loading) return <Loading />;
   return (
     <Routes>
       <Route path="/exam/:examId" element={<Exam />} />
