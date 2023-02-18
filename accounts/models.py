@@ -115,7 +115,7 @@ class StudentUser(BaseUser):
             "corrections": corrections,
             "max_marks": max_marks,
             "submitted": True,
-            "results_date": str(exam_instance.results_date),
+            "results_date": exam_instance.get_results_date(),
             "show": True
         }
 

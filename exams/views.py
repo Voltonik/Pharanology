@@ -60,7 +60,7 @@ def save_question_answer(request, exam_pk):
 
 	student.save(update_fields=['exams_history'])
 	
-	return Response(student.exams_history)
+	return Response({})
 
 @api_view(['GET', 'POST'])
 @authorized_view
@@ -80,10 +80,7 @@ def begin_exam(request, exam_pk):
 	if request.method == 'POST':
 		student.submit_exam(exam_instance, questions)
 		
-		return Response({
-			"data": student.exams_history[str(exam_pk)],
-			"results_date": "Exam Results date not public" if not exam_instance.broadcast_results_date else f"Exam results will be ready on {exam_instance.results_date}"
-		})
+		return Response({})
 	
 	return Response(QuestionSerializer(questions, many=True).data)
 
@@ -96,7 +93,7 @@ def results(request, exam_pk):
 		raise MethodNotAllowed("Exam results details are not viewable.")
 	
 	if exam_instance.results_date > timezone.now():
-		raise MethodNotAllowed("Exam results are not ready" if not exam_instance.broadcast_results_date else f"Exam results will be ready on {exam_instance.results_date}")
+		raise MethodNotAllowed(exam_instance.get_results_date())
 	
 	student_exam_data = student.exams_history.get(exam_pk)
 		

@@ -28,6 +28,9 @@ class Exam(models.Model):
     def clean(self):
         if self.results_date <= self.scheduled_for + timedelta(hours=float(self.duration)):
             raise ValidationError("Results date cannot be before the exam ends.")
+        
+    def get_results_date(self):
+        return "Exam results date not public" if not self.broadcast_results_date else f"Exam results will be ready on {self.results_date}"
     
     def grade(self, chosen, questions):
         marks = 0
