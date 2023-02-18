@@ -39,10 +39,11 @@ def save_question_answer(request, exam_pk):
 	
 	{
 		"chosen":{
-			"1":"choice_A_1",
-			"3":"choice_B_2",
-			"5":"choice_C_3",
-			"2":"is_true_4"
+			"1":"choice_A",
+			"3":"choice_B",
+			"5":"choice_C",
+			"2":"true",
+			"6":"false",
 		}
 	}
 	'''
@@ -80,7 +81,7 @@ def begin_exam(request, exam_pk):
 		
 		return Response({})
 	
-	return Response({"exam_details": ExamSerializer(exam_instance).data, "questions": QuestionSerializer(questions, many=True).data})
+	return Response({"exam_details": ExamSerializer(exam_instance).data, "questions": QuestionSerializer(questions, many=True).data, "chosen":student.exams_history[exam_pk]["chosen"]})
 
 @api_view(['GET'])
 @authorized_view
