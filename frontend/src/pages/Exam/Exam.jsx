@@ -2,8 +2,11 @@ import React, { useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import "./exam.scss";
 import { Form, Button, Modal } from "react-bootstrap";
+// Components
 import ExamNavbar from "@components/Navbar/ExamNavbar/ExamNavbar";
 import DashboardNavbar from "@components/Navbar/DashboardNavbar/DashboardNavbar";
+import Timer from "@components/Timer/Timer";
+// Pages
 import Error from "../Error/Error";
 // scss
 import "./exam.scss";
@@ -37,6 +40,7 @@ function Exam({}) {
       <ExamNavbar
         examName="Physics Test"
         progressBar={{ now: 50 }}
+        timer={<Timer className="ms-auto me-3" initialMinute={1} />}
         questions={[
           { number: 1, prompt: "1+1=?" },
           {
