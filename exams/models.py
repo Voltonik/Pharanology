@@ -1,16 +1,7 @@
 from django.db import models
 
 from accounts.enums import SchoolGrades
-
-from datetime import timedelta
-
-QuestionTypes = [(0, "Multiple Choice"), (1, "True or False")]
-
-class ExamState(models.TextChoices):
-    Scheduled = 'Scheduled'
-    Pushed = 'Pushed'
-    AwaitingResults = 'Awaiting Results'
-    Done = 'Done'
+from .enums import *
 
 class Subject(models.Model):
     name = models.CharField(max_length=255, default="Subject Name")

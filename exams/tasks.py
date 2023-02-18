@@ -16,13 +16,17 @@ def broadcast_exam_results(exam_instance_pk):
     exam_instance = Exam.objects.get(pk = exam_instance_pk)
         
         # TODO: search "show"
-    if exam_instance.full_history_available:
-        target_students = StudentUser.objects.filter(exams_history__has_key = exam_instance_pk)
-        
-        for student in target_students:
-            student.exams_history[exam_instance_pk]["show"] = True
 
-            student.save(update_fields=['exams_history'])
+    target_students = StudentUser.objects.filter(exams_history__has_key = exam_instance_pk)
+    
+    for student in target_students:
+        if exam_instance.full_history_available:
+            student.exams_history[exam_instance_pk]["show_detailed"] = True
+        else:
+            student.exams_history[exam_instance_pk]["show"] = True
+            
+
+        student.save(update_fields=['exams_history'])
     
     exam_instance.state = ExamState.Done
 
@@ -79,7 +83,9 @@ def push_exam(exam_instance_pk):
         student.upcoming_exams.remove(exam_instance)
         student.exams_history[exam_instance.pk] = {
             "exam_name": exam_instance.__str__(),
-            "submitted": False
+            "submitted": False,
+            "show": False,
+            "show_detailed": False
         }
         
     subtask(end_exam).apply_async((exam_instance_pk,), eta = end_time)

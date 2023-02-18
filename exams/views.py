@@ -50,7 +50,6 @@ def save_question_answer(request, exam_pk):
 	(exam_instance, student) = get_exam_data(request, exam_pk, False)
 
 	student.exams_history[exam_pk] = student.exams_history[exam_pk] | {
-		"show": False,
 		"chosen": student.exams_history.get(exam_pk, {}).get("chosen", {}) | request.data,
 	}
 
@@ -85,12 +84,12 @@ def begin_exam(request, exam_pk):
 def results(request, exam_pk):
 	(exam_instance, questions, student) = get_exam_data(request, exam_pk)
 	
+	if not exam_instance.full_history_available:
+		return MethodNotAllowed("Exam results details are not viewable.")
+	
 	if exam_instance.results_date < timezone.now():
 		return MethodNotAllowed("Exam results are not ready" if not exam_instance.broadcast_results_date else f"Exam results will be ready on {exam_instance.results_date}")
 	
-	student_exam_data = student.exams_history.get(exam_pk, None)
-	
-	if student_exam_data == None:
-		return MethodNotAllowed("You haven't done that exam yet")
-			
+	student_exam_data = student.exams_history.get(exam_pk)
+		
 	return Response(QuestionSerializer(questions, many=True).data | {"student_exam_data":student_exam_data})
