@@ -115,12 +115,11 @@ AUTH_USER_MODEL = 'accounts.BaseUser'
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'EET'
-
-USE_I18N = True
-
+TIME_ZONE = 'Africa/Cairo'
+CELERY_TIMEZONE = 'Africa/Cairo'
 USE_TZ = True
 
+USE_I18N = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/

@@ -6,6 +6,7 @@ from django.contrib.auth import authenticate
 from .models import *
 from .enums import AccountRoles
 from exams.serializers import ExamSerializer
+from exams.enums import ExamState
 
 def get_user_serializer(user):
     if user.role == AccountRoles.STUDENT:
@@ -43,7 +44,13 @@ class StudentSerializer(serializers.ModelSerializer):
     @property
     def data(self):
         _data = super().data
-        _data['exams_history'] = {k: v for k, v in _data['exams_history'].items() if v["show"] == True}
+        _data['exams_history'] = {k: v for k, v in _data['exams_history'].items() if v["show"] == True or v["show_detailed"] == True}
+        
+        for exam_key in _data["exams_history"]:
+            exam = _data["exams_history"][exam_key]
+            if not exam["show_detailed"]:
+                _data["exams_history"][exam_key].pop("corrections")
+                _data["exams_history"][exam_key].pop("chosen")
         
         return _data
 
@@ -104,7 +111,7 @@ class RegisterSerializer(serializers.Serializer):
         if password1 != password2:
             raise serializers.ValidationError("The two password fields didn't match.")
         
-        StudentUser.objects.create_user(
+        user = StudentUser.objects.create_user(
             username=username,
             first_name=first_name,
             last_name=last_name,
@@ -112,5 +119,20 @@ class RegisterSerializer(serializers.Serializer):
             grade=data['grade'],
             password=password2
         )
+        
+        available = Exam.objects.filter(for_grade = user.grade, state = ExamState.Pushed).all()
+        
+        user.upcoming_exams.add(*(Exam.objects.filter(for_grade = user.grade, state = ExamState.Scheduled).all()))
+        user.available_exams.add(*available)
+        
+        for available_exam in available:
+            user.exams_history[available_exam.pk] = user.exams_history.get(str(available_exam.pk), {}) | {
+                "exam_name": available_exam.__str__(),
+                "submitted": False,
+                "show": False,
+                "show_detailed": False
+            }
+            
+        user.save(update_fields=['exams_history'])
         
         return data

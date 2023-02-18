@@ -4,7 +4,6 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view
 
 from .serializers import *
-from .models import StudentUser
 from .decorators import authorized_view
 
 @api_view(['GET'])

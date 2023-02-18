@@ -1,16 +1,10 @@
 from django.db import models
-
-from accounts.enums import SchoolGrades
+from django.core.exceptions import ValidationError
 
 from datetime import timedelta
 
-QuestionTypes = [(0, "Multiple Choice"), (1, "True or False")]
-
-class ExamState(models.TextChoices):
-    Scheduled = 'Scheduled'
-    Pushed = 'Pushed'
-    AwaitingResults = 'Awaiting Results'
-    Done = 'Done'
+from accounts.enums import SchoolGrades
+from .enums import *
 
 class Subject(models.Model):
     name = models.CharField(max_length=255, default="Subject Name")
@@ -31,6 +25,10 @@ class Exam(models.Model):
     def __str__(self):
         return f"{self.subject} ({self.for_grade})  {self.scheduled_for}"
     
+    def clean(self):
+        if self.results_date <= self.scheduled_for + timedelta(hours=float(self.duration)):
+            raise ValidationError("Results date cannot be before the exam ends.")
+    
     def grade(self, chosen, questions):
         marks = 0
         corrections = []
@@ -38,7 +36,7 @@ class Exam(models.Model):
 
         for i in range(len(questions)):
             question = questions[i]
-            max_marks += float(question.marks)
+            max_marks += float(question.mark)
             
             if question.type == 0:
                 choices_answers = [question.is_true_A, question.is_true_B, question.is_true_C, question.is_true_D]
