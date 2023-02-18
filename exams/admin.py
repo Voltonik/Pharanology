@@ -36,14 +36,14 @@ class QuestionAdminForm(forms.ModelForm):
             
             true_choices = [is_true for is_true in [cleaned_data.get('is_true_A'), cleaned_data.get('is_true_B'), cleaned_data.get('is_true_C'), cleaned_data.get('is_true_D')] if is_true == True]
             
-            if len(true_choices) is not 1:
+            if len(true_choices) != 1:
                 raise ValidationError('Only one choice should be correct.')
             
         return self.cleaned_data
         
     def validate_required_fields(self, cleaned_data, field_names=[], message="This field is required."):
         for field_name in field_names:
-            if(field_name in cleaned_data and (cleaned_data[field_name] is None or cleaned_data[field_name] is '')):
+            if(field_name in cleaned_data and (cleaned_data[field_name] == None or cleaned_data[field_name] == '')):
                 self._errors[field_name] = self.error_class([message])
                 del cleaned_data[field_name]
 
