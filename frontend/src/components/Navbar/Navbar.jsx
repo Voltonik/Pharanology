@@ -24,7 +24,6 @@ function Navbar({
   nonNavChildren,
 }) {
   const currentProgress = progressBar?.now;
-  console.log(nonNavChildren);
   return (
     <BootstrapNavbar
       className={className}
