@@ -32,10 +32,10 @@ Pharanology is an engaging platform for taking exams that eliminates these issue
 - [x] Exam architecture: Data model & Questions creation panel
 - [x] Pushing exams
 - [x] Exam architecture: Solving
-- [ ] Exam architecture: Grading
-- [ ] Connect to frontend: REST Framework
+- [x] Exam architecture: Grading
+- [x] Connect to frontend: REST Framework
+- [x] Student dashboard: Show past exams, grades
 - [ ] Admin dashboard: Making exams and pushing them to students
-- [ ] Student dashboard: Show past exams, grades  (maybe?)
 
 ## TODO (Frontend)
 

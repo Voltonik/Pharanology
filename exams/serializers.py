@@ -7,7 +7,7 @@ class ExamSerializer(serializers.ModelSerializer):
 	
     class Meta:
         model = Exam
-        fields = ("id",
+        fields = ("pk",
                   "subject",
                   "state",
                   "scheduled_for",
@@ -20,7 +20,7 @@ class QuestionSerializer(serializers.ModelSerializer):
 	
     class Meta:
         model = Question
-        fields = ("exam", 
+        fields = ("pk",
                   "prompt", 
                   "mark", 
                   "type", 
