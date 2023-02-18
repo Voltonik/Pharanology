@@ -21,8 +21,10 @@ function Navbar({
   offcanvasOptions,
   type,
   expand,
+  nonNavChildren,
 }) {
   const currentProgress = progressBar?.now;
+  console.log(nonNavChildren);
   return (
     <BootstrapNavbar
       className={className}
@@ -32,6 +34,7 @@ function Navbar({
     >
       <Container>
         {brandName}
+        {nonNavChildren}
         <BootstrapNavbar.Toggle aria-controls="navbar-nav" />
         {type === NAVBAR_TYPES.PLACEHOLDER && (
           <>
