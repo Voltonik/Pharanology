@@ -72,21 +72,21 @@ class LoginSerializer(serializers.Serializer):
         return data
     
 class RegisterSerializer(serializers.Serializer):
-    username = serializers.CharField(required=True, validators=[UniqueValidator(queryset=StudentUser.objects.all())])
-    email = serializers.EmailField(required=True, validators=[UniqueValidator(queryset=StudentUser.objects.all())])
+    username = serializers.CharField(required=True, validators=[UniqueValidator(queryset=BaseUser.objects.all())])
+    email = serializers.EmailField(required=True, validators=[UniqueValidator(queryset=BaseUser.objects.all())])
     password1 = serializers.CharField(required=True)
     password2 = serializers.CharField(required=True)
     first_name = serializers.CharField(required=True)
     last_name = serializers.CharField(required=True)
     
-    grade = serializers.ChoiceField(choices=SchoolGrades.choices, default=SchoolGrades.G01)
+    grade = serializers.ChoiceField(choices=SchoolGrades.choices, required=True)
     
     def validate(self, data):
-        username = data.get('username')
-        password1 = data.get('password1')
-        password2 = data.get('password2')
-        first_name = data.get('first_name')
-        last_name = data.get('last_name')
+        username = data.get('username', '')
+        password1 = data.get('password1', '')
+        password2 = data.get('password2', '')
+        first_name = data.get('first_name', '')
+        last_name = data.get('last_name', '')
         
         if len(username) < 3 or len(username) > 15:
             raise serializers.ValidationError('Username must be between 3 and 15 characters long.')
@@ -103,5 +103,14 @@ class RegisterSerializer(serializers.Serializer):
         
         if password1 != password2:
             raise serializers.ValidationError("The two password fields didn't match.")
+        
+        StudentUser.objects.create_user(
+            username=username,
+            first_name=first_name,
+            last_name=last_name,
+            email=data['email'],
+            grade=data['grade'],
+            password=password2
+        )
         
         return data

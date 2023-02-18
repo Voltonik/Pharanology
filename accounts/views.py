@@ -18,19 +18,10 @@ def register_request(request):
     serializer = RegisterSerializer(data = request.data)
     
     if serializer.is_valid(raise_exception=True):
-        StudentUser.objects.create_user(
-            username=serializer.validated_data['username'],
-            first_name=serializer.validated_data['first_name'],
-            last_name=serializer.validated_data['last_name'],
-            email=serializer.validated_data['email'],
-            grade=serializer.validated_data['grade'],
-            password=serializer.validated_data['password2']
-        )
-    
         user = authenticate(username=serializer.validated_data['username'], password=serializer.validated_data['password1'])
         login(request, user)
     
-        return Response(get_user_serializer(request.user).data)
+        return Response({"is_authenticated": request.user.is_authenticated} | get_user_serializer(request.user).data)
     
     return Response(serializer.errors)
 
@@ -43,7 +34,7 @@ def login_request(request):
         user = serializer.validated_data['user']
         login(request, user)
         
-        return Response(get_user_serializer(request.user).data)
+        return Response({"is_authenticated": request.user.is_authenticated} | get_user_serializer(request.user).data)
     return Response(serializer.errors)
 
 

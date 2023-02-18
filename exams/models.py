@@ -26,14 +26,14 @@ class Exam(models.Model):
     duration = models.DecimalField(default=2, max_digits=5, decimal_places=3)
     results_date = models.DateTimeField()
     broadcast_results_date = models.BooleanField(default=True)
+    full_history_available = models.BooleanField(default=True)
     
     def __str__(self):
         return f"{self.subject} ({self.for_grade})  {self.scheduled_for}"
     
-    def grade(self, request_post, questions):
+    def grade(self, chosen, questions):
         marks = 0
         corrections = []
-        chosen = []
         max_marks = 0
 
         for i in range(len(questions)):
@@ -43,16 +43,14 @@ class Exam(models.Model):
             if question.type == 0:
                 choices_answers = [question.is_true_A, question.is_true_B, question.is_true_C, question.is_true_D]
                 
-                chosen_mcq = request_post.get(f'mcq_{i}')
-                chosen.append(chosen_mcq) 
-                    
+                chosen_mcq = chosen.get(f"{question.pk}")
+                
                 corrections.append(choices_answers.index(True))
                     
                 if (f"choice_A_{i}" == chosen_mcq and choices_answers[0]) or (f"choice_B_{i}" == chosen_mcq and choices_answers[1]) or (f"choice_C_{i}" == chosen_mcq and choices_answers[2]) or (f"choice_D_{i}" == chosen_mcq and choices_answers[3]):
                     marks += float(question.mark)   
             elif question.type == 1:
-                chosen_truefalse = request_post.get(f'true_or_false_{i}')
-                chosen.append(chosen_truefalse)
+                chosen_truefalse = chosen.get(f"{question.pk}")
                 
                 corrections.append(question.is_true)
                 
@@ -60,7 +58,7 @@ class Exam(models.Model):
                     marks += float(question.mark)
                     
         
-        return (marks, max_marks, corrections, chosen)
+        return (marks, max_marks, corrections)
 
 class Question(models.Model):
     exam = models.ForeignKey(Exam, on_delete=models.CASCADE)

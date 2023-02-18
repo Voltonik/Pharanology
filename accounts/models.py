@@ -80,7 +80,7 @@ class StudentManager(BaseUserManager):
             email=self.normalize_email(email),
             grade=grade,
         )
-
+        
         user.set_password(password)
         user.save(using=self._db)
         return user
@@ -107,16 +107,14 @@ class StudentUser(BaseUser):
         self.role = AccountRoles.STUDENT
         return super().save(*args , **kwargs)
     
-    def submit_exam(self, post_data, exam_instance, questions):
-        (marks, max_marks, corrections, chosen) = exam_instance.grade(post_data, questions)
+    def submit_exam(self, exam_instance, questions):
+        (marks, max_marks, corrections) = exam_instance.grade(self.exams_history[exam_instance.pk]["chosen"], questions)
 
-        self.exams_history[exam_instance.pk] = {
-            "exam_name": exam_instance.__str__(),
+        self.exams_history[exam_instance.pk] = self.exams_history[exam_instance.pk] | {
             "marks": marks,
             "corrections": corrections,
-            "chosen": chosen,
             "max_marks": max_marks,
-            "show": False
+            "submitted": True
         }
 
         self.save(update_fields=['exams_history'])
