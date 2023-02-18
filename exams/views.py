@@ -8,10 +8,8 @@ from accounts.decorators import authorized_view
 
 from django.utils import timezone
 
-from datetime import datetime
-
 from .models import *
-from .serializers import QuestionSerializer
+from .serializers import *
 
 def get_exam_data(request, exam_pk, get_questions=True):
 	if request.user.role != AccountRoles.STUDENT:
@@ -82,7 +80,7 @@ def begin_exam(request, exam_pk):
 		
 		return Response({})
 	
-	return Response(QuestionSerializer(questions, many=True).data)
+	return Response({"exam_details": ExamSerializer(exam_instance), "questions": QuestionSerializer(questions, many=True).data})
 
 @api_view(['GET'])
 @authorized_view
