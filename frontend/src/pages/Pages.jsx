@@ -14,8 +14,8 @@ import DashboardSharedLayout from "./SharedLayouts/DashboardSharedLayout";
 import { useAuthentication } from "@context/AuthenticationContext";
 
 function Pages() {
-  const { loading } = useAuthentication();
-  if (loading)
+  const { loading, userData } = useAuthentication();
+  if (loading || !userData)
     return (
       <div style={{ height: "100vh" }}>
         <Loading />
