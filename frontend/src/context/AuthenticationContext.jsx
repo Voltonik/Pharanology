@@ -1,6 +1,5 @@
 import React, { useState, useEffect, createContext, useContext } from "react";
 import useAxios from "axios-hooks";
-import api from "@/api";
 const AuthenticationContext = createContext();
 
 export function useAuthentication() {
