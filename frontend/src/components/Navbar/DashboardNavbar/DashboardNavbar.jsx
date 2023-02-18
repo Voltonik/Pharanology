@@ -28,7 +28,7 @@ function DashboardNavbar() {
         }
       )
       .then(() => {
-        setUserData(null);
+        setUserData({ is_authenticated: false });
       });
   }
   return (
@@ -45,10 +45,10 @@ function DashboardNavbar() {
         </>
       ) : (
         <div className="authentication-links">
-          <NavLink className="nav-link" to="login">
+          <NavLink className="nav-link" to="/login">
             Login
           </NavLink>
-          <NavLink className="nav-link" to="register">
+          <NavLink className="nav-link" to="/register">
             Register
           </NavLink>
         </div>

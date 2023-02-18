@@ -22,6 +22,9 @@ $navbar-collapse: lg;
       font-weight: 600;
       color: $primary;
       opacity: 0.9;
+      &:last-of-type {
+        padding: 0;
+      }
       &.active {
         opacity: 1;
       }

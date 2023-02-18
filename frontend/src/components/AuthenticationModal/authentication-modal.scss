@@ -1,7 +1,13 @@
 @use "@/custom.scss";
-@import "@components/Modal/modal.scss";
 @import "@components/Forms/forms.scss";
 .authentication-modal {
+  border-radius: 1rem;
+
+  background-color: white;
+  color: $primary;
+  a {
+    color: $primary;
+  }
   padding: 2rem 1rem;
   @include media-breakpoint-up(lg) {
     padding: 2rem 5rem;

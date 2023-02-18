@@ -9,16 +9,16 @@ import api, { getCookie } from "@/api";
 // Components
 import AuthenticationContainer from "@components/AuthenticationContainer/AuthenticationContainer";
 import AuthenticationModal from "@components/AuthenticationModal/AuthenticationModal";
+// Context
+import { useAuthentication } from "@context/AuthenticationContext";
 // scss
 import "./register.scss";
 
 function Register() {
   const navigate = useNavigate();
+  const { userData, setUserData } = useAuthentication();
   const [isRegistering, setIsRegistering] = useState(false);
-  const [message, setMessage] = useState({
-    content: "",
-    className: "",
-  });
+  const [messages, setMessages] = useState([]);
   const [details, setDetails] = useState({
     first_name: "",
     last_name: "",
@@ -28,13 +28,11 @@ function Register() {
     password2: "",
     grade: "",
   });
-  // useEffect(() => {
-  //   api.get("/api/auth/login/").then((response) => {
-  //     if (response.data.is_authenticated) {
-  //       navigate("/");
-  //     }
-  //   });
-  // }, []);
+  useEffect(() => {
+    if (userData && userData.is_authenticated) {
+      navigate("/");
+    }
+  }, [userData]);
   function handleChange(e) {
     const { name, value } = e.target;
     setDetails((prev) => {
@@ -55,21 +53,43 @@ function Register() {
       })
       .then((response) => {
         setIsRegistering(false);
-        setMessage({
-          content: "Registered successfully, Redirecting to dashboard",
-          className: "text-success",
-        });
-        // navigate("/");
-        console.log(response);
+        setMessages([
+          {
+            content: "Registered successfully, Redirecting to dashboard",
+            className: "text-success",
+          },
+        ]);
+        setUserData({ ...response.data, is_authenticated: true });
+        navigate("/");
       })
       .catch((error) => {
-        console.log(error);
-        // setIsRegistering(false);
-        // setMessage({
-        //   content: error.response.data.non_field_errors[0],
-        //   className: "text-danger",
-        // });
+        console.error(error.response.data);
+        let errorMessages = [];
+        const errors = error.response.data;
+        for (const fieldName in errors) {
+          const field = errors[fieldName];
+          errorMessages.push(...handleErrorMessage(field, fieldName));
+        }
+        setIsRegistering(false);
+        setMessages(errorMessages);
       });
+  }
+  function handleErrorMessage(field, fieldName) {
+    let errorMessages = [];
+    for (let i = 0; i < field.length; i++) {
+      let errorMessage = {};
+      switch (field[i]) {
+        case "This field must be unique.":
+          errorMessage.content = `Try another ${fieldName}. ${fieldName} must be unique`;
+          break;
+        default:
+          errorMessage.content = field[i];
+          break;
+      }
+      errorMessage.className = "text-danger";
+      errorMessages.push(errorMessage);
+    }
+    return errorMessages;
   }
   return (
     <AuthenticationContainer id="register">
@@ -133,7 +153,7 @@ function Register() {
             />
           </Form.Group>
           <Form.Group className="mb-1" controlId="password2">
-            <Form.Label>Password</Form.Label>
+            <Form.Label>Confirm Password</Form.Label>
             <Form.Control
               type="password"
               placeholder="Confirm Password"
@@ -165,14 +185,17 @@ function Register() {
               <option value="G12">G12</option>
             </Form.Select>
           </Form.Group>
-          <Button variant="primary" type="submit">
-            Register
+          <Button disabled={isRegistering} variant="primary" type="submit">
+            {isRegistering ? "Registering..." : "Register"}
           </Button>
-          {message.content && (
-            <h6 className={`text-center mb-0 ${message.className}`}>
-              {message.content}
-            </h6>
-          )}
+          {messages &&
+            messages.map((message) => {
+              return (
+                <h6 key={message.content} className={`${message.className}`}>
+                  {message.content}
+                </h6>
+              );
+            })}
         </Form>
 
         <div className="already-have-an-account">
