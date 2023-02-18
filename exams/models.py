@@ -33,12 +33,20 @@ class Exam(models.Model):
         return "Exam results date not public" if not self.broadcast_results_date else f"Exam results will be ready on {self.results_date}"
     
     def grade(self, chosen, questions):
+        '''
+        "chosen":{
+			"1":"choice_A",
+			"3":"choice_B",
+			"5":"choice_C",
+			"2":true,
+			"6":false,
+		}
+        '''
         marks = 0
         corrections = []
         max_marks = 0
 
-        for i in range(len(questions)):
-            question = questions[i]
+        for question in questions:
             max_marks += float(question.mark)
             
             if question.type == 0:
@@ -48,14 +56,14 @@ class Exam(models.Model):
                 
                 corrections.append(choices_answers.index(True))
                     
-                if (f"choice_A_{i}" == chosen_mcq and choices_answers[0]) or (f"choice_B_{i}" == chosen_mcq and choices_answers[1]) or (f"choice_C_{i}" == chosen_mcq and choices_answers[2]) or (f"choice_D_{i}" == chosen_mcq and choices_answers[3]):
+                if (f"choice_A" == chosen_mcq and choices_answers[0]) or (f"choice_B" == chosen_mcq and choices_answers[1]) or (f"choice_C" == chosen_mcq and choices_answers[2]) or (f"choice_D" == chosen_mcq and choices_answers[3]):
                     marks += float(question.mark)   
             elif question.type == 1:
                 chosen_truefalse = chosen.get(f"{question.pk}")
                 
                 corrections.append(question.is_true)
                 
-                if f"is_true_{i}" == chosen_truefalse and question.is_true:
+                if chosen_truefalse == question.is_true:
                     marks += float(question.mark)
                     
         
