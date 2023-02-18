@@ -1,4 +1,5 @@
 import { Route, Routes } from "react-router-dom";
+// Pages
 import Home from "./Home/Home";
 import Login from "./Authentication/Login/Login";
 import Register from "./Authentication/Register/Register";
@@ -14,7 +15,12 @@ import { useAuthentication } from "@context/AuthenticationContext";
 
 function Pages() {
   const { loading } = useAuthentication();
-  if (loading) return <Loading />;
+  if (loading)
+    return (
+      <div style={{ height: "100vh" }}>
+        <Loading />
+      </div>
+    );
   return (
     <Routes>
       <Route path="/exam/:examId" element={<Exam />} />

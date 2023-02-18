@@ -1,8 +1,8 @@
 @import "@/custom";
-@import "@/utils";
 @import "@bootstrap/scss/spinners";
 .loading {
-  @include gradient;
+  background-color: inherit;
+  height: 100%;
   .spinner-border {
     $dimensions: 4rem;
     width: $dimensions;
