@@ -10,10 +10,11 @@ import { useAuthentication } from "@/context/AuthenticationContext";
 // scss
 import "./exam-navbar.scss";
 
-function ExamNavbar({ questions, examName, progressBar }) {
+function ExamNavbar({ questions, examName, progressBar, timer }) {
   return (
     <Navbar
       className="position-sticky top-0"
+      nonNavChildren={timer}
       expand={"none"}
       progressBar={progressBar}
       type={NAVBAR_TYPES.PLACEHOLDER}
