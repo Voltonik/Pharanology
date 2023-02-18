@@ -12,10 +12,8 @@ import Error from "../Error/Error";
 import "./exam.scss";
 // Context
 import { useAuthentication } from "@context/AuthenticationContext";
-const QUESTION_TYPES = {
-  MCQ: "MCQ",
-  TrueOrFalse: "TrueOrFalse",
-};
+// consts
+import { QUESTION_TYPES } from "@/consts";
 function Exam({}) {
   const [isModalShown, setIsModalShown] = useState(false);
   const { examId } = useParams();
