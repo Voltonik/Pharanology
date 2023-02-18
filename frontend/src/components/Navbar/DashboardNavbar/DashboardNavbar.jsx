@@ -28,7 +28,7 @@ function DashboardNavbar() {
         }
       )
       .then(() => {
-        setUserData(null);
+        setUserData({ is_authenticated: false });
       });
   }
   return (
