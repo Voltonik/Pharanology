@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import "./exam.scss";
-import { Form, Button } from "react-bootstrap";
+import { Form, Button, Modal } from "react-bootstrap";
 import ExamNavbar from "@components/Navbar/ExamNavbar/ExamNavbar";
 import DashboardNavbar from "@components/Navbar/DashboardNavbar/DashboardNavbar";
 import Error from "../Error/Error";
+// scss
+import "./exam.scss";
 // Context
 import { useAuthentication } from "@context/AuthenticationContext";
 const QUESTION_TYPES = {
@@ -12,6 +14,7 @@ const QUESTION_TYPES = {
   TrueOrFalse: "TrueOrFalse",
 };
 function Exam({}) {
+  const [isModalShown, setIsModalShown] = useState(false);
   const { examId } = useParams();
   const { userData } = useAuthentication();
   function handleSubmit(e) {
@@ -56,42 +59,41 @@ function Exam({}) {
           prompt="Density = mass/volume"
           questionNumber={2}
         />
-        <hr />
-        <Question
-          type={QUESTION_TYPES.TrueOrFalse}
-          prompt="Density = mass/volume"
-          questionNumber={3}
-        />
-        <hr />
-        <Question
-          type={QUESTION_TYPES.TrueOrFalse}
-          prompt="Density = mass/volume"
-          questionNumber={4}
-        />
-        <hr />
-        <Question
-          type={QUESTION_TYPES.TrueOrFalse}
-          prompt="Density = mass/volume"
-          questionNumber={5}
-        />
-        <hr />
-        <Question
-          type={QUESTION_TYPES.TrueOrFalse}
-          prompt="Density = mass/volume"
-          questionNumber={6}
-        />
-        <hr />
-        <Question
-          type={QUESTION_TYPES.TrueOrFalse}
-          prompt="Density = mass/volume"
-          questionNumber={7}
-        />
         <div className="d-flex justify-content-center align-items-center">
-          <Button variant="primary" type="submit">
-            Submit Exam
+          <Button
+            variant="primary"
+            onClick={() => {
+              setIsModalShown(true);
+            }}
+          >
+            Submit
           </Button>
         </div>
       </Form>
+      <Modal
+        show={isModalShown}
+        onHide={() => {
+          setIsModalShown(false);
+        }}
+      >
+        <Modal.Header closeButton>
+          <Modal.Title>Submittion</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Are you sure you want to submit the exam?</Modal.Body>
+        <Modal.Footer>
+          <Button
+            variant="secondary"
+            onClick={() => {
+              setIsModalShown(false);
+            }}
+          >
+            Close
+          </Button>
+          <Button variant="primary" onClick={handleSubmit}>
+            Submit
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 }
@@ -99,7 +101,7 @@ function Exam({}) {
 function Question({ prompt, img, type, choices, questionNumber }) {
   return (
     <div className="container question" id={questionNumber}>
-      <h1>{questionNumber}.</h1>
+      <h4>{questionNumber}.</h4>
       {img && <img src={img} className="img-fluid" />}
       {prompt && <h3 className="text-black">{prompt}</h3>}
       {type === QUESTION_TYPES.MCQ &&
