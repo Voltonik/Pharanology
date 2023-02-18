@@ -78,6 +78,9 @@ function Register() {
     for (let i = 0; i < field.length; i++) {
       let errorMessage = {};
       switch (field[i]) {
+        case "Enter a valid email address.":
+          errorMessage.content = `Enter a valid email address.`;
+          break;
         case "This field must be unique.":
           errorMessage.content = `Try another ${fieldName}. ${fieldName} must be unique`;
           break;
