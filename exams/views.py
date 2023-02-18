@@ -80,7 +80,7 @@ def begin_exam(request, exam_pk):
 		
 		return Response({})
 	
-	return Response({"exam_details": ExamSerializer(exam_instance), "questions": QuestionSerializer(questions, many=True).data})
+	return Response({"exam_details": ExamSerializer(exam_instance).data, "questions": QuestionSerializer(questions, many=True).data})
 
 @api_view(['GET'])
 @authorized_view
