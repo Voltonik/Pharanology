@@ -1,0 +1,12 @@
+@import "@/custom.scss";
+@import "@components/Navbar/navbar.scss";
+@import "@bootstrap/scss/dropdown";
+.authentication-links {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  @include media-breakpoint-up($navbar-collapse) {
+    flex-direction: row;
+  }
+}

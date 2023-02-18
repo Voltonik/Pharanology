@@ -1,12 +1,17 @@
 @import "@/custom.scss";
 $navbar-padding-y: 1.25rem;
 @import "@bootstrap/scss/navbar";
-
+@import "@bootstrap/scss/transitions";
+@import "@bootstrap/scss/progress";
+@import "@bootstrap/scss/offcanvas";
+$navbar-collapse: lg;
 .navbar-collapse {
   flex-grow: none;
 }
 .navbar {
+  // z-index: 9999;
   background: tint-color($primary, 85%);
+  opacity: 0.95;
   .navbar-nav {
     display: flex;
     justify-content: space-between;
@@ -21,5 +26,17 @@ $navbar-padding-y: 1.25rem;
         opacity: 1;
       }
     }
+  }
+  .progress {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    border-radius: 0;
+  }
+}
+#navbar-nav {
+  .offcanvas-body {
+    padding: 0;
   }
 }

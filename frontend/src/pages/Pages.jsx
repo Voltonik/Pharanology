@@ -7,29 +7,38 @@ import ResetPasswordSent from "./Authentication/ResetPassword/ResetPasswordSent"
 import ResetPasswordComplete from "./Authentication/ResetPassword/ResetPasswordComplete";
 import ResetPasswordResetForm from "./Authentication/ResetPassword/ResetPasswordResetForm";
 import Error from "./Error/Error";
+import Exam from "./Exam/Exam";
+import Loading from "./Loading/Loading";
+import DashboardSharedLayout from "./SharedLayouts/DashboardSharedLayout";
+import { useAuthentication } from "@context/AuthenticationContext";
 
 function Pages() {
+  const { loading } = useAuthentication();
+  if (loading) return <Loading />;
   return (
     <Routes>
-      <Route path="/" element={<Home />}></Route>
-      {/* Authentication */}
-      <Route path="/login" element={<Login />}></Route>
-      <Route path="/register" element={<Register />}></Route>
-      <Route path="/reset-password" element={<ResetPasswordEmail />}></Route>
-      <Route
-        path="/reset-password-sent"
-        element={<ResetPasswordSent />}
-      ></Route>
-      <Route
-        path="/reset-password-complete"
-        element={<ResetPasswordComplete />}
-      ></Route>
-      <Route
-        path="/reset-password-reset-form"
-        element={<ResetPasswordResetForm />}
-      ></Route>
-      {/* Not matching the previous routes: */}
-      <Route path="*" element={<Error />} />
+      <Route path="/exam/:examId" element={<Exam />} />
+      <Route element={<DashboardSharedLayout />}>
+        <Route path="/" element={<Home />}></Route>
+        {/* Authentication */}
+        <Route path="/login" element={<Login />}></Route>
+        <Route path="/register" element={<Register />}></Route>
+        <Route path="/reset-password" element={<ResetPasswordEmail />}></Route>
+        <Route
+          path="/reset-password-sent"
+          element={<ResetPasswordSent />}
+        ></Route>
+        <Route
+          path="/reset-password-complete"
+          element={<ResetPasswordComplete />}
+        ></Route>
+        <Route
+          path="/reset-password-reset-form"
+          element={<ResetPasswordResetForm />}
+        ></Route>
+        {/* Not matching the previous routes: */}
+        <Route path="*" element={<Error />} />
+      </Route>
     </Routes>
   );
 }

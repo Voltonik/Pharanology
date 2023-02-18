@@ -1,9 +1,11 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 // react-router-dom
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 // react-bootstrap
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+// api
+import api, { getCookie } from "@/api";
 // Components
 import AuthenticationContainer from "@components/AuthenticationContainer/AuthenticationContainer";
 import AuthenticationModal from "@components/AuthenticationModal/AuthenticationModal";
@@ -11,15 +13,28 @@ import AuthenticationModal from "@components/AuthenticationModal/AuthenticationM
 import "./register.scss";
 
 function Register() {
+  const navigate = useNavigate();
+  const [isRegistering, setIsRegistering] = useState(false);
+  const [message, setMessage] = useState({
+    content: "",
+    className: "",
+  });
   const [details, setDetails] = useState({
-    firstName: "",
-    lastName: "",
+    first_name: "",
+    last_name: "",
     username: "",
     email: "",
-    password: "",
-    confirmPassword: "",
+    password1: "",
+    password2: "",
     grade: "",
   });
+  // useEffect(() => {
+  //   api.get("/api/auth/login/").then((response) => {
+  //     if (response.data.is_authenticated) {
+  //       navigate("/");
+  //     }
+  //   });
+  // }, []);
   function handleChange(e) {
     const { name, value } = e.target;
     setDetails((prev) => {
@@ -28,11 +43,33 @@ function Register() {
   }
   function handleSubmit(e) {
     e.preventDefault();
-    const { grade } = details;
-
-    if (!grade.includes("G")) {
-      return;
-    }
+    const csrftoken = getCookie("csrftoken");
+    setIsRegistering(true);
+    api
+      .post("/api/auth/register/", details, {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          "X-CSRFToken": csrftoken,
+        },
+      })
+      .then((response) => {
+        setIsRegistering(false);
+        setMessage({
+          content: "Registered successfully, Redirecting to dashboard",
+          className: "text-success",
+        });
+        // navigate("/");
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+        // setIsRegistering(false);
+        // setMessage({
+        //   content: error.response.data.non_field_errors[0],
+        //   className: "text-danger",
+        // });
+      });
   }
   return (
     <AuthenticationContainer id="register">
@@ -40,24 +77,24 @@ function Register() {
         <Form method="POST" className="container" onSubmit={handleSubmit}>
           <div className="row">
             <div className="col-6">
-              <Form.Group controlId="firstName">
+              <Form.Group controlId="first_name">
                 <Form.Label>First name</Form.Label>
                 <Form.Control
                   type="text"
                   placeholder="Enter First Name"
-                  name="firstName"
+                  name="first_name"
                   onChange={handleChange}
                   required
                 />
               </Form.Group>
             </div>
             <div className="col-6">
-              <Form.Group controlId="lastName">
+              <Form.Group controlId="last_name">
                 <Form.Label>Last name</Form.Label>
                 <Form.Control
                   type="text"
                   placeholder="Enter Last Name"
-                  name="lastName"
+                  name="last_name"
                   onChange={handleChange}
                   required
                 />
@@ -85,22 +122,22 @@ function Register() {
             />
           </Form.Group>
 
-          <Form.Group className="mb-1" controlId="password">
+          <Form.Group className="mb-1" controlId="password1">
             <Form.Label>Password</Form.Label>
             <Form.Control
               type="password"
               placeholder="Password"
-              name="password"
+              name="password1"
               onChange={handleChange}
               required
             />
           </Form.Group>
-          <Form.Group className="mb-1" controlId="confirmPassword">
+          <Form.Group className="mb-1" controlId="password2">
             <Form.Label>Password</Form.Label>
             <Form.Control
               type="password"
               placeholder="Confirm Password"
-              name="confirmPassword"
+              name="password2"
               onChange={handleChange}
               required
             />
@@ -111,8 +148,9 @@ function Register() {
               onChange={handleChange}
               aria-label="Default select example"
               name="grade"
+              required
             >
-              <option>-</option>
+              <option value="">-</option>
               <option value="G01">G01</option>
               <option value="G02">G02</option>
               <option value="G03">G03</option>
@@ -130,7 +168,13 @@ function Register() {
           <Button variant="primary" type="submit">
             Register
           </Button>
+          {message.content && (
+            <h6 className={`text-center mb-0 ${message.className}`}>
+              {message.content}
+            </h6>
+          )}
         </Form>
+
         <div className="already-have-an-account">
           <Link className="text-center" to="/login">
             Already have an account?

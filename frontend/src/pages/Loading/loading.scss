@@ -1,0 +1,12 @@
+@import "@/custom";
+@import "@/utils";
+@import "@bootstrap/scss/spinners";
+.loading {
+  @include gradient;
+  .spinner-border {
+    $dimensions: 4rem;
+    width: $dimensions;
+    height: $dimensions;
+    margin-right: 0.5rem;
+  }
+}

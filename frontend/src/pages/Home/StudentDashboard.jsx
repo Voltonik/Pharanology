@@ -6,6 +6,8 @@ import { Link } from "react-router-dom";
 // Splide
 import ExamSplide from "@components/ExamSplide/ExamSplide";
 import { SplideSlide } from "@splidejs/react-splide";
+// context
+import { useAuthentication } from "@context/AuthenticationContext";
 // react-bootstrap
 import Card from "react-bootstrap/Card";
 const SPLIDE_TYPES = {
@@ -14,6 +16,8 @@ const SPLIDE_TYPES = {
   HISTORY: "HISTORY",
 };
 function StudentDashboard() {
+  const { userData } = useAuthentication();
+  const fullName = `${userData.first_name} ${userData.last_name}`;
   return (
     <Height100vh id="student-dashboard">
       <div className="container">
@@ -21,7 +25,7 @@ function StudentDashboard() {
           <span>
             <h2>Hello,</h2>
             <span className="fs-4 fw-normal text-black opacity-50">
-              Maged Ibrahim.
+              {fullName}.
             </span>
           </span>
         </div>

@@ -1,73 +1,68 @@
-import React, { useEffect } from "react";
-// react-router-dom
-import { NavLink } from "react-router-dom";
+import React from "react";
 // react-bootstrap
 import Container from "react-bootstrap/Container";
 import Nav from "react-bootstrap/Nav";
 import BootstrapNavbar from "react-bootstrap/Navbar";
-//api
-import api, { getCookie } from "@/api.js";
-// scss
-import "@components/Buttons/buttons.scss";
-import "./navbar.scss";
-import { useAuthentication } from "@/context/AuthenticationContext";
-const EXPAND = "lg";
-function Navbar() {
-  const { isLoggedIn, setIsLoggedIn } = useAuthentication();
-  useEffect(() => {
-    api.get("/api/auth/login/").then((response) => {
-      setIsLoggedIn(response.data.is_authenticated);
-    });
-  }, []);
-  function logout() {
-    const csrftoken = getCookie("csrftoken");
-    api
-      .post(
-        "/api/auth/logout/",
-        {},
-        {
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            "X-CSRFToken": csrftoken,
-          },
-        }
-      )
-      .then(() => {
-        setIsLoggedIn(false);
-      });
-  }
-  return (
-    <BootstrapNavbar id="navbar" variant="light" expand={EXPAND}>
-      <Container>
-        <BootstrapNavbar.Toggle aria-controls="navbar-nav" />
-        <BootstrapNavbar.Collapse id="navbar-nav">
-          <Nav>
-            <NavLink className="nav-link" to="/">
-              Home
-            </NavLink>
+import ProgressBar from "react-bootstrap/ProgressBar";
+import Offcanvas from "react-bootstrap/Offcanvas";
 
-            {isLoggedIn ? (
-              <>
-                <button className="btn nav-link" onClick={logout}>
-                  Logout
-                </button>
-              </>
-            ) : (
-              <>
-                <NavLink className="nav-link" to="login">
-                  Login
-                </NavLink>
-                <NavLink className="nav-link" to="register">
-                  Register
-                </NavLink>
-              </>
-            )}
-          </Nav>
-        </BootstrapNavbar.Collapse>
+const EXPAND = "lg";
+
+export const NAVBAR_TYPES = {
+  COLLAPSE: "COLLAPSE",
+  PLACEHOLDER: "PLACEHOLDER",
+};
+
+function Navbar({
+  children,
+  progressBar,
+  brandName,
+  className,
+  offcanvasOptions,
+  type,
+  expand,
+}) {
+  const currentProgress = progressBar?.now;
+  return (
+    <BootstrapNavbar
+      className={className}
+      id="navbar"
+      variant="light"
+      expand={expand}
+    >
+      <Container>
+        {brandName}
+        <BootstrapNavbar.Toggle aria-controls="navbar-nav" />
+        {type === NAVBAR_TYPES.PLACEHOLDER && (
+          <>
+            <BootstrapNavbar.Offcanvas
+              {...offcanvasOptions}
+              id="navbar-nav"
+              placement="end"
+            >
+              <Offcanvas.Body>{children}</Offcanvas.Body>
+            </BootstrapNavbar.Offcanvas>
+          </>
+        )}
+        {type === NAVBAR_TYPES.COLLAPSE && (
+          <BootstrapNavbar.Collapse id="navbar-nav">
+            <Nav>{children}</Nav>
+          </BootstrapNavbar.Collapse>
+        )}
       </Container>
+      {currentProgress && (
+        <ProgressBar
+          now={currentProgress}
+          label={`${currentProgress}%`}
+          visuallyHidden
+        />
+      )}
     </BootstrapNavbar>
   );
 }
-
+Navbar.defaultProps = {
+  type: NAVBAR_TYPES.COLLAPSE,
+  expand: EXPAND,
+  offcanvasOptions: {},
+};
 export default Navbar;

@@ -5,8 +5,8 @@ import StudentDashboard from "./StudentDashboard";
 import { useAuthentication } from "@context/AuthenticationContext";
 
 function Home() {
-  const { isLoggedIn } = useAuthentication();
-  if (isLoggedIn) return <StudentDashboard />;
+  const { userData } = useAuthentication();
+  if (userData && userData.is_authenticated) return <StudentDashboard />;
   return <UnknownUserHome />;
 }
 
