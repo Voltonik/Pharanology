@@ -3,7 +3,7 @@ from celery.utils.log import get_task_logger
 from django.core.mail import send_mail
 from django.utils import timezone
 
-from datetime import timedelta, datetime
+from datetime import timedelta
 
 from .models import Exam, Question, ExamState
 from accounts.models import StudentUser
@@ -44,7 +44,7 @@ def end_exam(exam_instance_pk):
     
     for late_student in late_students:
         logger.info(f"LATE STUDENT ------------> {late_student}")
-        late_student.submit_exam(late_student.exams_history[exam_instance.pk]["chosen"], exam_instance, Question.objects.filter(exam = exam_instance).all())
+        late_student.submit_exam(exam_instance, Question.objects.filter(exam = exam_instance).all())
 
 @shared_task
 def push_exam(exam_instance_pk, end_time):
@@ -81,7 +81,7 @@ def push_exam(exam_instance_pk, end_time):
     for student in target_students:
         student.available_exams.add(exam_instance)
         student.upcoming_exams.remove(exam_instance)
-        student.exams_history[exam_instance.pk] = {
+        student.exams_history[exam_instance_pk] = {
             "exam_name": exam_instance.__str__(),
             "submitted": False,
             "show": False,
@@ -92,8 +92,8 @@ def push_exam(exam_instance_pk, end_time):
     
     
 def exam_chain(exam_instance_pk, eta, duration, results_date):
-    end_time = datetime.now() + timedelta(hours=(float)(duration))
-    print(end_time)
+    end_time = eta + timedelta(hours=(float)(duration))
+
     push_exam.apply_async((exam_instance_pk, end_time), eta=eta)
     end_exam.apply_async((exam_instance_pk,), eta = end_time)
     broadcast_exam_results.apply_async((exam_instance_pk,), eta = results_date)

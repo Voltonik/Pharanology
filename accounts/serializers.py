@@ -126,7 +126,7 @@ class RegisterSerializer(serializers.Serializer):
         user.available_exams.add(*available)
         
         for available_exam in available:
-            user.exams_history[available_exam.pk] = user.exams_history.get(str(available_exam.pk), {}) | {
+            user.exams_history[str(available_exam.pk)] = user.exams_history.get(str(available_exam.pk), {}) | {
                 "exam_name": available_exam.__str__(),
                 "submitted": False,
                 "show": False,
