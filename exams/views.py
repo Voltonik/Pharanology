@@ -38,20 +38,7 @@ def begin_exam(request, exam_pk):
 		raise PermissionDenied("Exam is not available for you.")
 	
 	if request.method == 'POST':
-		(marks, max_marks, corrections, chosen) = exam_instance.grade(request.POST, questions)
-		
-		student.exams_history[exam_pk] = {
-			"exam_name": exam_instance.__str__(),
-			"marks": marks,
-			"corrections": corrections,
-			"chosen": chosen,
-			"max_marks": max_marks,
-			"show": False
-		}
-		
-		student.save(update_fields=['exams_history'])
-		
-		student.available_exams.remove(exam_instance)
+		student.submit_exam(request.POST, exam_instance, questions)
 		
 		return Response(None)
 	

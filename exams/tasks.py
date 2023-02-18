@@ -30,10 +30,12 @@ def end_exam(exam_instance_pk):
     exam_instance.state = ExamState.AwaitingResults
     
     # close exam on students still in it
-    target_students = StudentUser.objects.filter(grade = exam_instance.for_grade).exclude(exam_history__has_key=exam_instance_pk)
+    late_students = StudentUser.objects.filter(grade = exam_instance.for_grade).exclude(exam_history__has_key=exam_instance_pk)
     
     # force post
-    
+    #for late_student in late_students:
+        # get post data somehow...
+        #late_student.submit_exam(request.POST, exam_instance, Question.objects.filter(exam = exam_instance).all())
     # frontend: redirect
     
     broadcast_exam_results.apply_async((exam_instance_pk,), eta = exam_instance.results_date)

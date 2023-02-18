@@ -106,6 +106,22 @@ class StudentUser(BaseUser):
     def save(self , *args , **kwargs):
         self.role = AccountRoles.STUDENT
         return super().save(*args , **kwargs)
+    
+    def submit_exam(self, post_data, exam_instance, questions):
+        (marks, max_marks, corrections, chosen) = exam_instance.grade(post_data, questions)
+
+        self.exams_history[exam_instance.pk] = {
+            "exam_name": exam_instance.__str__(),
+            "marks": marks,
+            "corrections": corrections,
+            "chosen": chosen,
+            "max_marks": max_marks,
+            "show": False
+        }
+
+        self.save(update_fields=['exams_history'])
+
+        self.available_exams.remove(exam_instance)
       
 class ExaminerManager(BaseUserManager):
     def create_user(self, username, first_name, last_name, email, password = None):
