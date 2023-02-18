@@ -108,13 +108,15 @@ class StudentUser(BaseUser):
         return super().save(*args , **kwargs)
     
     def submit_exam(self, exam_instance, questions):
-        (marks, max_marks, corrections) = exam_instance.grade(self.exams_history[exam_instance.pk]["chosen"], questions)
+        (marks, max_marks, corrections) = exam_instance.grade(self.exams_history[str(exam_instance.pk)]["chosen"], questions)
 
-        self.exams_history[exam_instance.pk] = self.exams_history[exam_instance.pk] | {
+        self.exams_history[str(exam_instance.pk)] = self.exams_history[str(exam_instance.pk)] | {
             "marks": marks,
             "corrections": corrections,
             "max_marks": max_marks,
-            "submitted": True
+            "submitted": True,
+            "results_date": str(exam_instance.results_date),
+            "show": True
         }
 
         self.save(update_fields=['exams_history'])

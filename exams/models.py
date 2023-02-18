@@ -36,7 +36,7 @@ class Exam(models.Model):
 
         for i in range(len(questions)):
             question = questions[i]
-            max_marks += float(question.marks)
+            max_marks += float(question.mark)
             
             if question.type == 0:
                 choices_answers = [question.is_true_A, question.is_true_B, question.is_true_C, question.is_true_D]

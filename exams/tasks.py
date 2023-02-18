@@ -1,8 +1,6 @@
 from celery import shared_task
-from celery import subtask
 from celery.utils.log import get_task_logger
 from django.core.mail import send_mail
-from django.utils import timezone
 
 from datetime import timedelta, datetime
 
@@ -37,16 +35,14 @@ def end_exam(exam_instance_pk):
     exam_instance.save(update_fields=['state'])
     
     # close exam on students still in it
-    late_students = StudentUser.objects.filter(grade = exam_instance.for_grade).exclude(exam_history__contains={str(exam_instance_pk): {"submitted": False}})
+    late_students = StudentUser.objects.filter(grade = exam_instance.for_grade).exclude(exams_history__contains={str(exam_instance_pk): {"submitted": False}})
     
     for late_student in late_students:
         print(f"LATE STUDENT ------------> {late_student}")
         late_student.submit_exam(late_student.exams_history[exam_instance.pk]["chosen"], exam_instance, Question.objects.filter(exam = exam_instance).all())
-    
-    subtask(broadcast_exam_results).apply_async((exam_instance_pk,), eta = exam_instance.results_date)
 
 @shared_task
-def push_exam(exam_instance_pk):
+def push_exam(exam_instance_pk, end_time):
     exam_instance = Exam.objects.get(pk = exam_instance_pk)
     
     exam_instance.state = ExamState.Pushed
@@ -56,8 +52,6 @@ def push_exam(exam_instance_pk):
     target_emails = list(target_students.values_list('email', flat=True))
     
     questions = Question.objects.filter(exam = exam_instance)
-    
-    end_time = timezone.now() + timedelta(hours=(float)(exam_instance.duration))
     
     send_mail(
             subject=f'Pharanology: You have a {exam_instance.subject} exam! Your have 10 minutes to start it or your time will start!',
@@ -90,5 +84,11 @@ def push_exam(exam_instance_pk):
         }
         
         student.save(update_fields=['exams_history'])
-        
-    subtask(end_exam).apply_async((exam_instance_pk,), eta = end_time)
+    
+    
+def exam_chain(exam_instance_pk, eta, duration, results_date):
+    end_time = datetime.now() + timedelta(hours=(float)(duration))
+    
+    push_exam.apply_async((exam_instance_pk, end_time), eta=eta)
+    end_exam.apply_async((exam_instance_pk,), eta = end_time)
+    broadcast_exam_results.apply_async((exam_instance_pk,), eta = results_date)

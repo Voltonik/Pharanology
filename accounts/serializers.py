@@ -46,10 +46,11 @@ class StudentSerializer(serializers.ModelSerializer):
         _data = super().data
         _data['exams_history'] = {k: v for k, v in _data['exams_history'].items() if v["show"] == True or v["show_detailed"] == True}
         
-        for exam in _data["exams_history"]:
+        for exam_key in _data["exams_history"]:
+            exam = _data["exams_history"][exam_key]
             if not exam["show_detailed"]:
-                _data["exams_history"][exam].pop("corrections")
-                _data["exams_history"][exam].pop("chosen")
+                _data["exams_history"][exam_key].pop("corrections")
+                _data["exams_history"][exam_key].pop("chosen")
         
         return _data
 
