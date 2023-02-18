@@ -7,7 +7,7 @@ from django.core.mail import send_mail
 from .tasks import push_exam
 from .models import *
 
-from datetime import timedelta
+from datetime import timedelta, datetime
 
 from accounts.models import StudentUser
 
@@ -64,7 +64,7 @@ class ExamAdmin(admin.ModelAdmin):
         messages.add_message(request, messages.INFO, f"scheduled exam {obj.for_grade} {obj.subject} for {obj.scheduled_for}")
         
         super().save_model(request, obj, form, change)
-        
+
         push_exam.apply_async((obj.pk,), eta=obj.scheduled_for)
         
         target_students = StudentUser.objects.filter(grade = obj.for_grade)

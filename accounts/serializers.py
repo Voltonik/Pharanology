@@ -119,7 +119,19 @@ class RegisterSerializer(serializers.Serializer):
             password=password2
         )
         
-        user.upcoming_exams = Exam.objects.filter(for_grade = user.grade, state = ExamState.Scheduled)
-        user.available_exams = Exam.objects.filter(for_grade = user.grade, state = ExamState.Pushed)
+        available = Exam.objects.filter(for_grade = user.grade, state = ExamState.Pushed).all()
+        
+        user.upcoming_exams.add(*(Exam.objects.filter(for_grade = user.grade, state = ExamState.Scheduled).all()))
+        user.available_exams.add(*available)
+        
+        for available_exam in available:
+            user.exams_history[available_exam.pk] = user.exams_history.get(str(available_exam.pk), {}) | {
+                "exam_name": available_exam.__str__(),
+                "submitted": False,
+                "show": False,
+                "show_detailed": False
+            }
+            
+        user.save(update_fields=['exams_history'])
         
         return data

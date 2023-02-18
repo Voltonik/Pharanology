@@ -16,8 +16,6 @@ class ExamSerializer(serializers.ModelSerializer):
 
 
 class QuestionSerializer(serializers.ModelSerializer):
-    exam = ExamSerializer()
-	
     class Meta:
         model = Question
         fields = ("pk",

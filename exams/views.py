@@ -8,6 +8,8 @@ from accounts.decorators import authorized_view
 
 from django.utils import timezone
 
+from datetime import datetime
+
 from .models import *
 from .serializers import QuestionSerializer
 
@@ -54,8 +56,6 @@ def save_question_answer(request, exam_pk):
 	}
 
 	student.save(update_fields=['exams_history'])
-
-	student.available_exams.remove(exam_instance)
 	
 	return Response(student.exams_history)
 

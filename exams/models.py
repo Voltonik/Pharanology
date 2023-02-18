@@ -1,4 +1,7 @@
 from django.db import models
+from django.core.exceptions import ValidationError
+
+from datetime import timedelta
 
 from accounts.enums import SchoolGrades
 from .enums import *
@@ -21,6 +24,10 @@ class Exam(models.Model):
     
     def __str__(self):
         return f"{self.subject} ({self.for_grade})  {self.scheduled_for}"
+    
+    def clean(self):
+        if self.results_date <= self.scheduled_for + timedelta(hours=float(self.duration)):
+            raise ValidationError("Results date cannot be before the exam ends.")
     
     def grade(self, chosen, questions):
         marks = 0

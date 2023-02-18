@@ -2,9 +2,9 @@ from celery import shared_task
 from celery import subtask
 from celery.utils.log import get_task_logger
 from django.core.mail import send_mail
-
 from django.utils import timezone
-from datetime import timedelta
+
+from datetime import timedelta, datetime
 
 from .models import Exam, Question, ExamState
 from accounts.models import StudentUser
@@ -15,8 +15,9 @@ logger = get_task_logger(__name__)
 def broadcast_exam_results(exam_instance_pk):
     exam_instance = Exam.objects.get(pk = exam_instance_pk)
         
-        # TODO: search "show"
-
+    exam_instance.state = ExamState.Done
+    exam_instance.save(update_fields=['state'])
+    
     target_students = StudentUser.objects.filter(exams_history__has_key = exam_instance_pk)
     
     for student in target_students:
@@ -28,13 +29,12 @@ def broadcast_exam_results(exam_instance_pk):
 
         student.save(update_fields=['exams_history'])
     
-    exam_instance.state = ExamState.Done
-
 @shared_task
 def end_exam(exam_instance_pk):
     exam_instance = Exam.objects.get(pk = exam_instance_pk)
     
     exam_instance.state = ExamState.AwaitingResults
+    exam_instance.save(update_fields=['state'])
     
     # close exam on students still in it
     late_students = StudentUser.objects.filter(grade = exam_instance.for_grade).exclude(exam_history__contains={str(exam_instance_pk): {"submitted": False}})
@@ -50,13 +50,14 @@ def push_exam(exam_instance_pk):
     exam_instance = Exam.objects.get(pk = exam_instance_pk)
     
     exam_instance.state = ExamState.Pushed
+    exam_instance.save(update_fields=['state'])
     
     target_students = StudentUser.objects.filter(grade = exam_instance.for_grade)
     target_emails = list(target_students.values_list('email', flat=True))
     
     questions = Question.objects.filter(exam = exam_instance)
     
-    end_time = (timezone.now() + timedelta(hours=(float)(exam_instance.duration))).time()
+    end_time = timezone.now() + timedelta(hours=(float)(exam_instance.duration))
     
     send_mail(
             subject=f'Pharanology: You have a {exam_instance.subject} exam! Your have 10 minutes to start it or your time will start!',
@@ -69,7 +70,7 @@ def push_exam(exam_instance_pk):
                 - Subject: {exam_instance.subject}
                 - Grade: {exam_instance.for_grade}
                 - Duration: {exam_instance.duration}
-                - Ends on: {end_time}
+                - Ends on: {end_time.time()}
                 - Questions: {len(questions)}         
 
                 
@@ -87,5 +88,7 @@ def push_exam(exam_instance_pk):
             "show": False,
             "show_detailed": False
         }
+        
+        student.save(update_fields=['exams_history'])
         
     subtask(end_exam).apply_async((exam_instance_pk,), eta = end_time)
