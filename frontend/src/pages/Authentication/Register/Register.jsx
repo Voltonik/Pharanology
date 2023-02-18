@@ -63,6 +63,7 @@ function Register() {
         navigate("/");
       })
       .catch((error) => {
+        console.error(error.response.data);
         let errorMessages = [];
         const errors = error.response.data;
         for (const fieldName in errors) {
@@ -78,22 +79,11 @@ function Register() {
     for (let i = 0; i < field.length; i++) {
       let errorMessage = {};
       switch (field[i]) {
-        case "Enter a valid email address.":
-          errorMessage.content = `Enter a valid email address.`;
-          break;
         case "This field must be unique.":
           errorMessage.content = `Try another ${fieldName}. ${fieldName} must be unique`;
           break;
-        case "This password is too short. It must contain at least 8 characters.":
-          errorMessage.content = field[i];
-          break;
-        case "This password is too common.":
-          errorMessage.content = field[i];
-          break;
-        case "The two password fields didn't match.":
-          errorMessage.content = field[i];
-          break;
         default:
+          errorMessage.content = field[i];
           break;
       }
       errorMessage.className = "text-danger";
