@@ -108,7 +108,7 @@ class StudentUser(BaseUser):
         return super().save(*args , **kwargs)
     
     def submit_exam(self, exam_instance, questions):
-        (marks, max_marks, corrections) = exam_instance.grade(self.exams_history[str(exam_instance.pk)]["chosen"], questions)
+        (marks, max_marks, corrections) = exam_instance.grade(self.exams_history[str(exam_instance.pk)].get("chosen", {}), questions)
 
         self.exams_history[str(exam_instance.pk)] = self.exams_history[str(exam_instance.pk)] | {
             "marks": marks,
