@@ -18,7 +18,7 @@ def get_exam_data(request, exam_pk, get_questions=True):
 		raise PermissionDenied("You are not a student.")
 	
 	try:
-		exam_instance = Exam.objects.get(pk = exam_pk)
+		exam_instance = Exam.objects.get(pk = int(exam_pk))
 	except Exam.DoesNotExist:
 		raise NotFound("Exam not found")
 			
@@ -67,11 +67,15 @@ def save_question_answer(request, exam_pk):
 def begin_exam(request, exam_pk):
 	(exam_instance, questions, student) = get_exam_data(request, exam_pk)	
 
-	if student.exams_history[exam_pk]["submitted"]:
-		raise MethodNotAllowed("You have already submitted that exam")
-		
 	if exam_instance not in student.available_exams.all():
 		raise PermissionDenied("Exam is not available for you.")
+	
+	if exam_pk not in student.exams_history:
+		raise MethodNotAllowed("Exam not pushed yet.")
+
+	if student.exams_history[exam_pk]["submitted"]:
+		raise MethodNotAllowed("You have already submitted that exam.")
+		
 	
 	if request.method == 'POST':
 		student.submit_exam(exam_instance, questions)

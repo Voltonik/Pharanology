@@ -1,6 +1,7 @@
 from celery import shared_task
 from celery.utils.log import get_task_logger
 from django.core.mail import send_mail
+from django.utils import timezone
 
 from datetime import timedelta, datetime
 
@@ -20,9 +21,9 @@ def broadcast_exam_results(exam_instance_pk):
     
     for student in target_students:
         if exam_instance.full_history_available:
-            student.exams_history[exam_instance_pk]["show_detailed"] = True
+            student.exams_history[str(exam_instance_pk)]["show_detailed"] = True
         else:
-            student.exams_history[exam_instance_pk]["show"] = True
+            student.exams_history[str(exam_instance_pk)]["show"] = True
             
 
         student.save(update_fields=['exams_history'])
@@ -35,10 +36,14 @@ def end_exam(exam_instance_pk):
     exam_instance.save(update_fields=['state'])
     
     # close exam on students still in it
-    late_students = StudentUser.objects.filter(grade = exam_instance.for_grade).exclude(exams_history__contains={str(exam_instance_pk): {"submitted": False}})
+    late_students = []
+    
+    for s in StudentUser.objects.filter(grade = exam_instance.for_grade).all():
+        if not s.exams_history[str(exam_instance_pk)].get("submitted", False):
+            late_students.append(s)
     
     for late_student in late_students:
-        print(f"LATE STUDENT ------------> {late_student}")
+        logger.info(f"LATE STUDENT ------------> {late_student}")
         late_student.submit_exam(late_student.exams_history[exam_instance.pk]["chosen"], exam_instance, Question.objects.filter(exam = exam_instance).all())
 
 @shared_task
@@ -64,7 +69,7 @@ def push_exam(exam_instance_pk, end_time):
                 - Subject: {exam_instance.subject}
                 - Grade: {exam_instance.for_grade}
                 - Duration: {exam_instance.duration}
-                - Ends on: {end_time.time()}
+                - Ends on: {end_time}
                 - Questions: {len(questions)}         
 
                 
@@ -88,7 +93,7 @@ def push_exam(exam_instance_pk, end_time):
     
 def exam_chain(exam_instance_pk, eta, duration, results_date):
     end_time = datetime.now() + timedelta(hours=(float)(duration))
-    
+    print(end_time)
     push_exam.apply_async((exam_instance_pk, end_time), eta=eta)
     end_exam.apply_async((exam_instance_pk,), eta = end_time)
     broadcast_exam_results.apply_async((exam_instance_pk,), eta = results_date)
