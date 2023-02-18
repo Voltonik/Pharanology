@@ -52,7 +52,7 @@ def save_question_answer(request, exam_pk):
 	(exam_instance, student) = get_exam_data(request, exam_pk, False)
 	
 	if student.exams_history[exam_pk]["submitted"]:
-		raise MethodNotAllowed("You have already submitted that exam")
+		raise MethodNotAllowed("save_question_answer", "You have already submitted that exam")
 
 	student.exams_history[exam_pk] = student.exams_history[exam_pk] | {
 		"chosen": student.exams_history.get(exam_pk, {}).get("chosen", {}) | request.data,
@@ -71,10 +71,10 @@ def begin_exam(request, exam_pk):
 		raise PermissionDenied("Exam is not available for you.")
 	
 	if exam_pk not in student.exams_history:
-		raise MethodNotAllowed("Exam not pushed yet.")
+		raise MethodNotAllowed("begin_exam", "Exam not pushed yet.")
 
 	if student.exams_history[exam_pk]["submitted"]:
-		raise MethodNotAllowed("You have already submitted that exam.")
+		raise MethodNotAllowed("begin_exam", "You have already submitted that exam.")
 		
 	
 	if request.method == 'POST':
@@ -90,10 +90,10 @@ def results(request, exam_pk):
 	(exam_instance, questions, student) = get_exam_data(request, exam_pk)
 	
 	if not exam_instance.full_history_available:
-		raise MethodNotAllowed("Exam results details are not viewable.")
+		raise MethodNotAllowed("results", "Exam results details are not viewable.")
 	
 	if exam_instance.results_date > timezone.now():
-		raise MethodNotAllowed(exam_instance.get_results_date())
+		raise MethodNotAllowed("results", exam_instance.get_results_date())
 	
 	student_exam_data = student.exams_history.get(exam_pk)
 		
