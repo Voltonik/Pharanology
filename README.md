@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://lh3.googleusercontent.com/u/0/drive-viewer/AAOQEORj8mSo98CwhsTOOs7UGFtYbn_14FH-G3CFJ2-z3d1yk0WulVMU5QQmigqP5Qrb4mKXH-cI4PVHudTAIcQ2nVGmYPNUdQ=w1366-h625" width="350">
+  <img src="https://user-images.githubusercontent.com/38553310/228974599-086051fd-71ef-4820-a42d-0a7d4dd5628f.png" width=350>
 </p>
 
 # Pharanology
