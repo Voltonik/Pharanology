@@ -28,7 +28,6 @@ Pharanology is an engaging platform for taking exams that eliminates these issue
 - Note: if you pull the repository and a weird "column does not exist" error appears, delete your db.sqlite then redo step 8.
 
 ## TODO (Backend)
-
 - [x] User authentication
 - [x] User roles (student, admin)
 - [x] Exam architecture: Data model & Questions creation panel
@@ -37,26 +36,18 @@ Pharanology is an engaging platform for taking exams that eliminates these issue
 - [x] Exam architecture: Grading
 - [x] Connect to frontend: REST Framework
 - [x] Student dashboard: Show past exams, grades
-- [ ] Admin dashboard: Making exams and pushing them to students
+- [x] Admin dashboard: Making exams and pushing them to students
 
 ## TODO (Frontend)
-
-### Components
-
-- [x] Navbar
-
-### Pages
-
 - [x] Error
 - [ ] Examiner Dashboard
 - [x] Login
-- [ ] Add Verification
 - [x] Password reset Done
 - [x] Password reset form
 - [x] Password reset sent
 - [x] Password reset
-- [ ] Connect to Backend
+- [x] Connect to Backend
 - [x] Register
 - [ ] Add Verification
-- [ ] Student Dashboard
-- [ ] Exam
+- [x] Student Dashboard
+- [x] Exam
