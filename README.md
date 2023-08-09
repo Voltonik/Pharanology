@@ -2,7 +2,7 @@
   <img src="https://user-images.githubusercontent.com/38553310/228974599-086051fd-71ef-4820-a42d-0a7d4dd5628f.png" width=350>
 </p>
 
-(This is just a project for learning)
+(This is just a learning project.)
 
 # Pharanology
 
